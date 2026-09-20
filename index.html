@@ -81,7 +81,7 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <button type="button" id="detail-next">Siguiente →</button>
 </div>
 <p><small>Explicación, orientaciones y ejemplo educativos originales de NeuroNova Apps fundamentados en CAST (2024); no son una transcripción del contenido oficial.</small></p>
-<p><a id="official" href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">Consultar el contenido completo en CAST (2024) ↗</a></p>
+
 </dialog>
 <footer><div class="footer-content"><p>© 2026 NeuroNova Apps. Materiales educativos originales: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">CC BY-NC-SA 4.0</a>. Código propio: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p><p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a> · <a href="https://github.com/neuronova-apps/DUA-3.0">Repositorio en GitHub</a></p></div></footer>
 <script src="./dua-contenidos.js"></script>
@@ -173,9 +173,6 @@ function showDetail(trigger, principle, group, number, title, content){
   const index=expandedOrder.indexOf(number);
   document.getElementById("detail-previous").disabled=index===0;
   document.getElementById("detail-next").disabled=index===expandedOrder.length-1;
-  document.getElementById("official").href=extended.url;
- }else{
-  document.getElementById("official").href="https://udlguidelines.cast.org/es/";
  }
  if(!dialog.open)dialog.showModal();
  dialog.scrollTop=0;
