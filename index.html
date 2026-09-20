@@ -1,52 +1,123 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Recursos y orientaciones sobre el Diseño Universal para el Aprendizaje (DUA 3.0) de NeuroNova Apps.">
-  <title>DUA 3.0 | NeuroNova Apps</title>
-  <style>
-    :root { color-scheme: light dark; font-family: system-ui, -apple-system, Segoe UI, sans-serif; line-height: 1.65; }
-    body { margin: 0; background: #f7f9fc; color: #192638; }
-    .container { max-width: 840px; padding: 2rem 1.25rem; margin: auto; }
-    header { background: #17375a; color: #fff; }
-    header .container { padding-top: 3rem; padding-bottom: 3rem; }
-    h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; }
-    h2 { margin-top: 2rem; }
-    a { color: #135993; }
-    a:focus-visible { outline: 3px solid #b66a00; outline-offset: 3px; }
-    header a { color: white; }
-    footer { background: #e9eff6; border-top: 1px solid #ccd7e3; margin-top: 2rem; }
-    footer p { margin: .8rem 0; }
-    @media (prefers-color-scheme: dark) {
-      body { background: #101923; color: #eff5fc; }
-      header { background: #122d48; }
-      a { color: #9bcfff; }
-      footer { background: #1b2a39; border-color: #35475b; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Explorador interactivo de los tres principios, nueve directrices y 36 consideraciones del DUA 3.0, basado en CAST (2024).">
+<title>DUA 3.0 interactivo | NeuroNova Apps</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#172433;background:#f5f7fb;line-height:1.5;scroll-behavior:smooth}
+*{box-sizing:border-box}body{margin:0}a{color:#124c83}button{font:inherit}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #e0a222;outline-offset:4px}
+.skip{position:absolute;top:-80px;left:12px;background:white;padding:12px;z-index:8}.skip:focus{top:8px}
+.hero{background:#122c46;color:white;padding:30px max(20px,calc((100vw - 1400px)/2));}
+.hero .brand{color:#a9d7ec;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.8rem}
+.hero h1{font-size:clamp(1.7rem,3.5vw,3rem);line-height:1.15;margin:.4rem 0}.hero p{max-width:900px;margin:.7rem 0 0}
+main,.footer-content{max-width:1440px;margin:auto;padding:22px 20px}
+.intro{margin:0 0 20px}.intro h2{margin:0 0 6px;font-size:1.25rem}.intro p{margin:0;color:#405163}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start;transition:grid-template-columns .32s ease}
+.principle{min-width:0;display:flex;flex-direction:column;gap:12px;--strong:#087d44;--pale:#d3eddf;--accent:#0b613a}
+.principle[data-principle="representation"]{--strong:#6e508e;--pale:#e3d9ed;--accent:#50356d}
+.principle[data-principle="action"]{--strong:#0877ac;--pale:#d0eefb;--accent:#095c84}
+.principle-header{background:var(--strong);border-radius:20px;color:white;padding:20px 20px 25px;min-height:136px;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease}
+.principle-header::after{content:"";position:absolute;background:var(--pale);height:28px;bottom:-14px;left:-2%;width:105%;border-radius:50% 50% 0 0}
+.principle-header .eyebrow{font-size:.84rem;font-weight:650}.principle-header h3{font-size:clamp(1.2rem,2vw,1.65rem);line-height:1.2;margin:4px 0 8px}.principle-header p{font-size:.91rem;margin:0}
+.guideline{background:var(--pale);border:1px solid transparent;border-radius:17px;padding:16px 17px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.guideline:hover,.guideline:focus-within{border-color:var(--strong);box-shadow:0 9px 24px #17243318;transform:translateY(-2px)}
+.guideline h4{font-size:1rem;line-height:1.35;margin:0 0 10px}.guideline .small{font-weight:400;font-size:.82rem;display:block}
+.guideline ul{list-style:none;padding:0;margin:0;display:grid;gap:5px}
+.checkpoint{width:100%;text-align:left;border:0;border-radius:8px;background:transparent;color:#172433;padding:5px 7px;cursor:pointer;line-height:1.45;transition:background .18s ease}
+.checkpoint:hover,.checkpoint:focus-visible{background:#ffffffaa}.checkpoint .number{font-size:.79rem;font-weight:700;color:var(--accent);white-space:nowrap}.checkpoint .arrow{color:var(--accent);font-weight:800}
+@media(min-width:960px) and (hover:hover){
+.board:has(.principle:nth-child(1):hover){grid-template-columns:1.18fr .91fr .91fr}
+.board:has(.principle:nth-child(2):hover){grid-template-columns:.91fr 1.18fr .91fr}
+.board:has(.principle:nth-child(3):hover){grid-template-columns:.91fr .91fr 1.18fr}
+.principle:hover .principle-header{box-shadow:0 12px 26px #17243330;transform:translateY(-2px)}
+}
+.source{border:1px solid #cbd8e4;background:white;border-radius:15px;margin-top:23px;padding:16px 20px}
+.source h2{font-size:1.1rem;margin:0 0 7px}.source p{margin:5px 0;font-size:.93rem}
+footer{background:#e6edf5;margin-top:28px;font-size:.88rem}footer p{margin:6px 0}
+dialog{border:0;border-radius:18px;max-width:min(620px,calc(100% - 28px));width:100%;padding:26px;box-shadow:0 25px 70px #0005;color:#172433}
+dialog::backdrop{background:#102438a8}
+dialog h2{font-size:1.4rem;margin:0 0 10px}dialog .modal-meta{font-weight:700;font-size:.85rem;color:#355878;margin:0 0 7px}
+dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38px;height:38px;cursor:pointer}dialog .note{background:#eff4fa;border-left:4px solid #2b6898;padding:12px;margin:16px 0}
+@media(max-width:959px){.board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}}
+@media(min-width:630px) and (max-width:959px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <p>NeuroNova Apps</p>
-      <h1>Diseño Universal para el Aprendizaje (DUA 3.0)</h1>
-      <p>Recursos y orientaciones para promover prácticas pedagógicas inclusivas y reducir barreras para el aprendizaje y la participación.</p>
-    </div>
-  </header>
-  <main id="contenido" class="container">
-    <h2>Acerca de este proyecto</h2>
-    <p>Este sitio reúne recursos educativos propios inspirados en el marco del Diseño Universal para el Aprendizaje. El contenido se desarrollará progresivamente.</p>
-    <p>Para consultar las directrices y sus formulaciones oficiales, visita las <a href="https://udlguidelines.cast.org/es/">Directrices DUA 3.0 de CAST en español</a>.</p>
-    <h2>Fuentes y condiciones de uso</h2>
-    <p>El fundamento conceptual proviene de CAST (2024). NeuroNova Apps es responsable de sus propios materiales educativos; este sitio no es una publicación oficial de CAST.</p>
-  </main>
-  <footer>
-    <div class="container">
-      <p>© 2026 NeuroNova Apps. Los contenidos educativos originales están bajo <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a>; el código propio está bajo <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p>
-      <p>Fundamento conceptual: <a href="https://udlguidelines.cast.org/es/">CAST (2024), Directrices DUA 3.0</a>. Proyecto independiente, no afiliado ni respaldado por CAST.</p>
-      <p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">Licencia de contenidos</a> · <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a></p>
-    </div>
-  </footer>
+<a class="skip" href="#contenido">Saltar al contenido principal</a>
+<header class="hero">
+<div class="brand">NeuroNova Apps · Recursos educativos</div>
+<h1>Pautas de Diseño Universal para el Aprendizaje</h1>
+<p>DUA 3.0 · Explora los principios, las directrices y sus consideraciones. Pasa el cursor sobre cada columna o selecciona una consideración para consultar su referencia.</p>
+</header>
+<main id="contenido">
+<section class="intro" aria-labelledby="explora"><h2 id="explora">Explora los tres principios del DUA 3.0</h2><p>La organización y numeración toman como referencia a CAST (2024). En celulares, toca cada consideración para conocerla.</p></section>
+<div class="board" id="board" aria-label="Tres principios y nueve directrices del DUA"></div>
+<section class="source" aria-labelledby="fuentes"><h2 id="fuentes">Fuente conceptual y atribución</h2><p>CAST. (2024). <em>CAST Universal Design for Learning Guidelines, version 3.0</em>. <a href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">Consultar las directrices oficiales en español ↗</a></p><p>Explorador independiente desarrollado por NeuroNova Apps. No es una publicación oficial ni cuenta con patrocinio o respaldo de CAST.</p></section>
+</main>
+<dialog id="detail" aria-labelledby="detail-title">
+<button class="close" id="close" type="button" aria-label="Cerrar detalle">✕</button>
+<p class="modal-meta" id="detail-meta"></p><h2 id="detail-title"></h2>
+<div class="note">Esta primera versión presenta el esquema interactivo. Las explicaciones pedagógicas, estrategias y casos prácticos propios se incorporarán en una etapa posterior.</div>
+<p>Para consultar la explicación completa de esta consideración, utiliza la <a id="official" href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">fuente oficial de CAST (2024) ↗</a>.</p>
+</dialog>
+<footer><div class="footer-content"><p>© 2026 NeuroNova Apps. Materiales educativos originales: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">CC BY-NC-SA 4.0</a>. Código propio: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p><p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a> · <a href="https://github.com/neuronova-apps/DUA-3.0">Repositorio en GitHub</a></p></div></footer>
+<script>
+"use strict";
+// Denominaciones transcritas de la lámina en español proporcionada como referencia por el usuario.
+const principles=[
+{id:"engagement",name:"Compromiso",question:"¿Por qué aprender?",groups:[
+{n:7,name:"Aceptación de intereses e identidades",items:["Optimizar la elección y autonomía","Optimizar la relevancia, el valor y la autenticidad","Promover la alegría y el juego","Abordar sesgos, amenazas y distracciones"]},
+{n:8,name:"Mantener el esfuerzo y la constancia",items:["Aclarar el significado y el propósito de los objetivos","Optimizar los desafíos y el respaldo","Fomentar la colaboración, la interdependencia y el aprendizaje colectivo","Fomentar la pertenencia y la comunidad","Ofrecer comentarios orientados a la acción"]},
+{n:9,name:"Capacidad emocional",items:["Reconocer expectativas, creencias y motivaciones","Desarrollar conciencia de sí mismo y de los demás","Promover la reflexión individual y colectiva","Fomentar la empatía y las prácticas reconfortantes"]}
+]},
+{id:"representation",name:"Representación",question:"¿Qué aprender?",groups:[
+{n:1,name:"Percepción",items:["Apoyar las oportunidades para personalizar la presentación de información","Apoyar múltiples formas de percibir información","Representar diversas perspectivas e identidades de formas auténticas"]},
+{n:2,name:"Idioma y los símbolos",items:["Aclarar vocabulario, símbolos y estructuras lingüísticas","Respaldar la comprensión de textos, notaciones matemáticas y símbolos","Promover la comprensión y el respeto en todos los idiomas y dialectos","Abordar los sesgos en el uso del lenguaje y los símbolos","Ilustrar a través de múltiples medios"]},
+{n:3,name:"Desarrollo de conocimientos",items:["Conectar el conocimiento previo con el nuevo aprendizaje","Resaltar y explorar patrones, características clave, ideas relevantes y relaciones","Fomentar múltiples formas de conocimiento y creación de significado","Maximizar la transferencia y generalización"]}
+]},
+{id:"action",name:"Acción y expresión",question:"¿Cómo aprender y demostrar lo aprendido?",groups:[
+{n:4,name:"Interacción",items:["Diversificar y valorar los métodos de respuesta, orientación y movimiento","Optimizar el acceso a materiales accesibles, así como tecnologías y herramientas de asistencia y acceso"]},
+{n:5,name:"Expresión y la comunicación",items:["Usar múltiples medios para la comunicación","Usar múltiples herramientas para la construcción, composición y creatividad","Desarrollar fluidez con apoyo gradual para la práctica y el desempeño","Abordar los sesgos relacionados con los modos de expresión y comunicación"]},
+{n:6,name:"Desarrollo de estrategias",items:["Establecer objetivos significativos","Planificar y anticipar los desafíos","Organizar la información y los recursos","Mejorar la capacidad para controlar el progreso","Desafiar las prácticas excluyentes"]}
+]}];
+const board=document.getElementById("board");
+const dialog=document.getElementById("detail");
+let lastTrigger=null;
+for(const principle of principles){
+ const section=document.createElement("section");section.className="principle";section.dataset.principle=principle.id;
+ const head=document.createElement("div");head.className="principle-header";
+ const eyebrow=document.createElement("div");eyebrow.className="eyebrow";eyebrow.textContent="Diseño de múltiples medios de";
+ const h3=document.createElement("h3");h3.textContent=principle.name;
+ const subtitle=document.createElement("p");subtitle.textContent=principle.question;
+ head.append(eyebrow,h3,subtitle);section.append(head);
+ for(const group of principle.groups){
+  const card=document.createElement("article");card.className="guideline";
+  const heading=document.createElement("h4");
+  const prefix=document.createElement("span");prefix.className="small";prefix.textContent="Opciones de diseño para";
+  heading.append(prefix,document.createTextNode(group.name+" ("+group.n+")"));card.append(heading);
+  const list=document.createElement("ul");
+  group.items.forEach((label,index)=>{
+   const number=group.n+"."+(index+1);
+   const li=document.createElement("li");const button=document.createElement("button");button.type="button";button.className="checkpoint";
+   const num=document.createElement("span");num.className="number";num.textContent=" ("+number+")";
+   const arrow=document.createElement("span");arrow.className="arrow";arrow.setAttribute("aria-hidden","true");arrow.textContent=" ›";
+   button.append(document.createTextNode("• "+label),num,arrow);
+   button.setAttribute("aria-label","Abrir consideración "+number+": "+label);
+   button.addEventListener("click",()=>{
+    lastTrigger=button;
+    document.getElementById("detail-meta").textContent=principle.name+" · Directriz "+group.n+" · Consideración "+number;
+    document.getElementById("detail-title").textContent=label;
+    dialog.showModal();
+   });li.append(button);list.append(li);
+  });card.append(list);section.append(card);
+ }board.append(section);
+}
+document.getElementById("close").addEventListener("click",()=>dialog.close());
+dialog.addEventListener("click",event=>{if(event.target===dialog)dialog.close()});
+dialog.addEventListener("close",()=>lastTrigger?.focus());
+</script>
 </body>
 </html>
