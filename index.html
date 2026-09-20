@@ -108,6 +108,31 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .level-dialog .level-reference{margin-top:16px;font-size:.88rem;color:#405163}
 @media(min-width:1101px){.level-inline{display:none}}
 @media(max-width:1100px){.level-inline{display:block}}
+/* Controles de exploración: efectos visuales sin modificar el tamaño del cuadro. */
+.explore-tools{background:white;border:1px solid #cbd8e4;border-radius:16px;padding:18px 20px;margin:0 0 18px}
+.explore-tools>label{display:block;font-weight:750;margin-bottom:8px}
+.search-line{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.search-line input{min-width:0;flex:1 1 230px;padding:11px 13px;border:1px solid #90a9bd;border-radius:10px;font:inherit;color:#172433;background:#fff}
+.search-line button,.level-filters button{border:1px solid #a2bfd2;border-radius:10px;background:#f0f5fa;color:#173e61;padding:9px 13px;cursor:pointer;font:inherit;font-weight:650}
+.search-line button:hover,.level-filters button:hover{background:#e1eff9}
+.tool-help{font-size:.85rem;color:#425567;margin:8px 0 13px}
+.level-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.level-filters>span{font-weight:700;margin-right:3px}
+.level-filters button[aria-pressed="true"]{background:#173e61;color:#fff;border-color:#173e61}
+.tool-status{font-size:.9rem;margin:12px 0 0;color:#385269}
+.search-results[hidden]{display:none}
+.search-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));gap:8px;margin-top:12px;max-height:290px;overflow:auto}
+.search-result{background:#f1f7fc;text-align:left;color:#172433;border:1px solid #c7dce9;border-radius:10px;padding:10px 12px;cursor:pointer;font:inherit}
+.search-result:hover,.search-result:focus-visible{background:#dceefa;border-color:#25658d}
+.search-result strong{display:block;font-size:.92rem}
+.search-result small{display:block;font-size:.78rem;color:#42576b;margin-top:3px}
+.guideline.is-highlighted{box-shadow:inset 0 0 0 3px var(--strong),0 5px 14px #17243318;border-color:var(--strong)}
+.guideline.is-dimmed{opacity:.43}
+.guideline.is-highlighted .search-match{background:#fff8cb;box-shadow:0 0 0 2px #fff8cb;border-radius:4px}
+.guideline.is-highlighted .guide-open.search-match{background:#fff8cb}
+.row-label.is-level-active{background:#c2d8e9;box-shadow:inset 0 0 0 2px #376789}
+.level-inline.is-level-active{background:#fff;box-shadow:inset 0 0 0 2px var(--strong)}
+@media(max-width:759px){.explore-tools{padding:15px}.level-filters button{flex-grow:1}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -125,6 +150,20 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 </nav>
 <main id="contenido">
 <section class="intro" aria-labelledby="explora"><h2 id="explora">Explora los tres principios del DUA 3.0</h2><p>La estructura y numeración siguen CAST (2024). Selecciona las directrices 1 a 9 o cualquiera de sus 36 consideraciones para explorar explicaciones y ejemplos propios de NeuroNova Apps.</p></section>
+<section class="explore-tools" aria-label="Buscar y explorar directrices del DUA">
+<label for="dua-search">Buscar directrices y consideraciones</label>
+<div class="search-line"><input id="dua-search" type="search" autocomplete="off" placeholder="Ej.: autonomía, 3.4, accesibilidad…" aria-describedby="dua-search-help"><button id="dua-clear" type="button">Limpiar búsqueda</button></div>
+<p class="tool-help" id="dua-search-help">Busca por número, título o palabras de las explicaciones y ejemplos. Se admiten palabras con o sin tilde.</p>
+<div class="level-filters" role="group" aria-label="Resaltar las directrices por nivel">
+<span>Resaltar nivel:</span>
+<button type="button" data-filter="access" aria-pressed="false">Acceso</button>
+<button type="button" data-filter="support" aria-pressed="false">Soporte</button>
+<button type="button" data-filter="executive" aria-pressed="false">Función ejecutiva</button>
+<button type="button" data-filter="all" aria-pressed="true">Todos</button>
+</div>
+<p id="dua-search-status" class="tool-status" role="status" aria-live="polite">Se muestran las 9 directrices y 36 consideraciones.</p>
+<div id="dua-search-results" class="search-results" aria-label="Resultados de búsqueda" hidden></div>
+</section>
 <div class="board" id="board" aria-label="Tres principios y nueve directrices del DUA"></div>
 <section class="source" aria-labelledby="fuentes"><h2 id="fuentes">Fuente conceptual y atribución</h2><p>CAST. (2024). <em>CAST Universal Design for Learning Guidelines, version 3.0</em>. <a href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">Consultar las directrices oficiales en español ↗</a></p><p>Explorador independiente desarrollado por NeuroNova Apps. No es una publicación oficial ni cuenta con patrocinio o respaldo de CAST.</p></section>
 </main>
@@ -202,6 +241,18 @@ group.name=DUA_DETAILS.guidelines[group.n][0];
 group.items=group.items.map((label,index)=>officialLabels[group.n+"."+(index+1)]||label);
 }
 const board=document.getElementById("board");
+const searchRecords=[];
+const levelMap={access:[7,1,4],support:[8,2,5],executive:[9,3,6]};
+let activeLevel="all";
+const searchInput=document.getElementById("dua-search");
+const results=document.getElementById("dua-search-results");
+const searchStatus=document.getElementById("dua-search-status");
+function normalized(text){return String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es").trim();}
+function recordSearch(ref,title,principle,content,card,trigger){
+ const extended=window.DUA_EXPANDED?.[ref];
+ const fields=[ref,title,principle.name,...(content||[]),...(extended?.paragraphs||[]),...(extended?.actions||[]),extended?.example||""];
+ searchRecords.push({ref,title,principle:principle.name,content:normalized(fields.join(" ")),card,trigger});
+}
 const dialog=document.getElementById("detail");
 let lastTrigger=null;
 const expandedOrder=["1","1.1","1.2","1.3","2","2.1","2.2","2.3","2.4","2.5","3","3.1","3.2","3.3","3.4","4","4.1","4.2","5","5.1","5.2","5.3","5.4","6","6.1","6.2","6.3","6.4","6.5","7","7.1","7.2","7.3","7.4","8","8.1","8.2","8.3","8.4","8.5","9","9.1","9.2","9.3","9.4"];
@@ -275,15 +326,17 @@ for(const principle of principles){
  head.append(eyebrow,h3,subtitle);section.append(head);
  for(const group of principle.groups){
   const card=document.createElement("article");card.className="guideline";
+  card.dataset.guideline=String(group.n);
   const levelIndex=principle.groups.indexOf(group);
   const levelNames=["Acceso","Soporte","Función ejecutiva"];
   const levelIds=["access","support","executive"];
+  card.dataset.level=levelIds[levelIndex];
   const levelButton=document.createElement("button");
   levelButton.type="button";
   levelButton.className="level-inline";
   levelButton.textContent=levelNames[levelIndex]+" · ¿Qué significa?";
   levelButton.setAttribute("aria-label","Explicar nivel "+levelNames[levelIndex]);
-  levelButton.addEventListener("click",()=>openLevel(levelIds[levelIndex],levelButton));
+  levelButton.addEventListener("click",()=>{setLevel(levelIds[levelIndex]);openLevel(levelIds[levelIndex],levelButton)});
   card.append(levelButton);
   const heading=document.createElement("h4");
   const prefix=document.createElement("span");prefix.className="small";prefix.textContent="Opciones de diseño para";
@@ -293,6 +346,7 @@ const guideHint=document.createElement("span");guideHint.className="hint";guideH
 guideButton.setAttribute("aria-label","Consultar directriz "+group.n+": "+group.name);
 guideButton.addEventListener("click",()=>showDetail(guideButton,principle,group,String(group.n),group.name,DUA_DETAILS.guidelines[group.n].slice(1)));
 heading.append(prefix,guideButton);card.append(heading);
+  recordSearch(String(group.n),group.name,principle,DUA_DETAILS.guidelines[group.n].slice(1),card,guideButton);
   const list=document.createElement("ul");
   group.items.forEach((label,index)=>{
    const number=group.n+"."+(index+1);
@@ -301,7 +355,9 @@ heading.append(prefix,guideButton);card.append(heading);
    const arrow=document.createElement("span");arrow.className="arrow";arrow.setAttribute("aria-hidden","true");arrow.textContent=" ›";
    button.append(document.createTextNode("• "+label),num,arrow);
    button.setAttribute("aria-label","Abrir consideración "+number+": "+label);
-   button.addEventListener("click",()=>showDetail(button,principle,group,number,label,DUA_DETAILS.considerations[number]));li.append(button);list.append(li);
+   button.addEventListener("click",()=>showDetail(button,principle,group,number,label,DUA_DETAILS.considerations[number]));
+   recordSearch(number,label,principle,DUA_DETAILS.considerations[number],card,button);
+   li.append(button);list.append(li);
   });card.append(list);section.append(card);
  }board.append(section);
 }
@@ -315,9 +371,66 @@ for(const [level,label] of [["access","Acceso"],["support","Soporte"],["executiv
  const text=document.createElement("span");
  text.textContent=label;
  rail.append(text);
- rail.addEventListener("click",()=>openLevel(level,rail));
+ rail.addEventListener("click",()=>{setLevel(level);openLevel(level,rail)});
  board.append(rail);
 }
+/* Búsqueda y resaltado optativos: no esconden tarjetas ni alteran la matriz o los diálogos. */
+function setLevel(level){
+ activeLevel=levelMap[level]?level:"all";
+ for(const button of document.querySelectorAll(".level-filters button")){
+  button.setAttribute("aria-pressed",String(button.dataset.filter===activeLevel));
+ }
+ renderExploration();
+}
+function renderExploration(){
+ const query=normalized(searchInput.value);
+ const matched=query?searchRecords.filter(record=>record.content.includes(query)):[];
+ const matchingCards=new Set(matched.map(record=>record.card));
+ const allowed=levelMap[activeLevel]||null;
+ for(const card of board.querySelectorAll(".guideline")){
+  const levelMatch=!allowed||allowed.includes(Number(card.dataset.guideline));
+  const textMatch=!query||matchingCards.has(card);
+  card.classList.toggle("is-highlighted",(!!query&&textMatch)|| (!!allowed&&levelMatch));
+  card.classList.toggle("is-dimmed",!levelMatch||!textMatch);
+ }
+ for(const record of searchRecords){
+  record.trigger.classList.toggle("search-match",!!query&&matched.includes(record));
+ }
+ for(const rail of board.querySelectorAll(".row-label")){
+  rail.classList.toggle("is-level-active",rail.dataset.level===activeLevel);
+ }
+ for(const button of board.querySelectorAll(".level-inline")){
+  const card=button.closest(".guideline");
+  button.classList.toggle("is-level-active",card?.dataset.level===activeLevel);
+ }
+ results.replaceChildren();
+ results.hidden=!query;
+ if(query){
+  for(const record of matched){
+   const item=document.createElement("button");
+   item.type="button";item.className="search-result";
+   const title=document.createElement("strong");title.textContent=record.ref+" · "+record.title;
+   const subtitle=document.createElement("small");subtitle.textContent=record.principle+" · Abrir explicación";
+   item.append(title,subtitle);
+   item.addEventListener("click",()=>{
+    record.card.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});
+    record.trigger.click();
+   });
+   results.append(item);
+  }
+ }
+ const levelName=activeLevel==="all"?"todos los niveles":LEVEL_DETAILS[activeLevel].title;
+ searchStatus.textContent=query
+  ?matched.length+" resultado"+(matched.length===1?"":"s")+" para «"+searchInput.value.trim()+"»; resaltado en "+levelName+"."
+  :"Se muestran las 9 directrices y 36 consideraciones; "+levelName+(activeLevel==="all"?".":" resaltado.");
+}
+searchInput.addEventListener("input",renderExploration);
+searchInput.addEventListener("search",renderExploration);
+document.getElementById("dua-clear").addEventListener("click",()=>{searchInput.value="";renderExploration();searchInput.focus()});
+for(const button of document.querySelectorAll(".level-filters button")){
+ button.addEventListener("click",()=>setLevel(button.dataset.filter));
+}
+renderExploration();
 document.getElementById("detail-previous").addEventListener("click",()=>{
  const index=expandedOrder.indexOf(activeDetail);
  if(index>0)openExpanded(expandedOrder[index-1],lastTrigger);
