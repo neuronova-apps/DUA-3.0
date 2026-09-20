@@ -134,13 +134,19 @@ group.items=group.items.map((label,index)=>officialLabels[group.n+"."+(index+1)]
 const board=document.getElementById("board");
 const dialog=document.getElementById("detail");
 let lastTrigger=null;
-const expandedOrder=["7","7.1","7.2","7.3","7.4"];
+const expandedOrder=["7","7.1","7.2","7.3","7.4","8","8.1","8.2","8.3","8.4","8.5"];
 let activeDetail=null;
 function openExpanded(number,trigger){
- const group=principles[0].groups[0];
- const title=number==="7"?group.name:group.items[Number(number.split(".")[1])-1];
- const content=number==="7"?DUA_DETAILS.guidelines[7].slice(1):DUA_DETAILS.considerations[number];
- return showDetail(trigger,principles[0],group,number,title,content);
+ const guidelineNumber=Number(number.split(".")[0]);
+ const principle=principles.find(p=>p.groups.some(g=>g.n===guidelineNumber));
+ const group=principle?.groups.find(g=>g.n===guidelineNumber);
+ if(!group)return;
+ const consideration=number.includes(".");
+ const index=consideration?Number(number.split(".")[1])-1:-1;
+ const title=consideration?group.items[index]:group.name;
+ const content=consideration?DUA_DETAILS.considerations[number]:DUA_DETAILS.guidelines[guidelineNumber].slice(1);
+ if(!title||!content)return;
+ return showDetail(trigger,principle,group,number,title,content);
 }
 function showDetail(trigger, principle, group, number, title, content){
  if(!content)return;
