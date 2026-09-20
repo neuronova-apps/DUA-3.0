@@ -52,3 +52,84 @@ considerations:{
 "9.4":["Crear condiciones de empatía y reparación cuando se producen tensiones o daños.","Facilitar un diálogo respetuoso para reconocer efectos de un conflicto y acordar cómo repararlo."]
 }
 };
+
+/* Desarrollo original y ampliado de la Directriz 7 basado en las capturas
+   compartidas y las páginas oficiales de CAST (2024). No reproduce su texto. */
+window.DUA_EXPANDED={
+"7":{
+ paragraphs:[
+ "Los intereses y las identidades influyen en cómo las personas se vinculan con las actividades educativas. Para facilitar el compromiso, conviene conocer aquello que cada estudiante considera significativo, los recursos que utiliza y las condiciones en las que puede participar con seguridad.",
+ "La identidad puede relacionarse con la lengua, la cultura, las experiencias, la discapacidad y las comunidades de pertenencia, entre otras dimensiones. Ninguna de estas características permite anticipar por sí sola qué motivará a un estudiante: sus intereses también cambian con el tiempo.",
+ "Acoger intereses e identidades implica diseñar alternativas flexibles que reconozcan a cada aprendiz como participante legítimo, sin exigir que todos aprendan mediante los mismos temas, materiales o formas de intervención."
+ ],
+ actions:[
+ "Conocer las preferencias de los estudiantes sin asumir que todos los miembros de un grupo comparten los mismos intereses.",
+ "Revisar ejemplos y materiales para incluir experiencias diversas representadas de manera respetuosa.",
+ "Ofrecer distintas vías de participación vinculadas con una meta de aprendizaje común.",
+ "Mantener espacios donde cada estudiante pueda expresar qué condiciones favorecen o dificultan su participación."
+ ],
+ example:"Al planificar un proyecto sobre el entorno, el docente ofrece varias preguntas de investigación relacionadas con la comunidad. Los estudiantes escogen una, proponen materiales accesibles y acuerdan cómo compartir sus hallazgos.",
+ url:"https://udlguidelines.cast.org/es/compromiso/intereses-identidades/"
+},
+"7.1":{
+ paragraphs:[
+ "La autonomía se fortalece cuando el estudiante puede tomar decisiones que realmente inciden en cómo aprende. Las opciones deben guardar relación con la meta de aprendizaje y ser posibles de utilizar con los apoyos disponibles.",
+ "Dar a elegir no equivale a abandonar al aprendiz frente a demasiadas alternativas. Algunas personas preferirán seleccionar entre dos opciones claras; otras podrán proponer nuevas rutas o participar en la planificación de las actividades. La elección puede cambiar según el contexto y el momento."
+ ],
+ actions:[
+ "Permitir escoger entre contenidos o temas que conduzcan al mismo propósito de aprendizaje.",
+ "Ofrecer varias herramientas para investigar, elaborar una respuesta o presentar una producción.",
+ "Acordar opciones para practicar, revisar o mostrar el progreso.",
+ "Flexibilizar, cuando corresponda, el orden de los pasos y los tiempos de trabajo.",
+ "Invitar a los estudiantes a participar en decisiones sobre metas y tareas sin imponerles más elecciones de las que desean asumir."
+ ],
+ example:"En una actividad de narración, cada estudiante elige entre crear una secuencia ilustrada, grabar el relato o escribirlo. El docente mantiene como criterio común la organización del inicio, el desarrollo y el desenlace.",
+ url:"https://udlguidelines.cast.org/es/compromiso/intereses-identidades/autonom%C3%ADa-elecci%C3%B3n/"
+},
+"7.2":{
+ paragraphs:[
+ "Las actividades suelen despertar mayor interés cuando su propósito resulta comprensible y conecta con experiencias, preguntas o metas significativas para quien aprende. Esa conexión puede surgir tanto de situaciones cotidianas como de relatos imaginarios y problemas creativos.",
+ "No existe un único tema valioso para todo el grupo. Conviene variar los contextos y permitir que los estudiantes identifiquen relaciones entre los contenidos escolares y sus vidas, comunidades o aspiraciones, sin reducir sus identidades a estereotipos."
+ ],
+ actions:[
+ "Contextualizar temas y fuentes de información en realidades cercanas y culturalmente pertinentes.",
+ "Proponer tareas con una finalidad visible y un destinatario, cuando esto sea adecuado.",
+ "Ofrecer alternativas acordes con distintas edades, conocimientos previos y formas de participar.",
+ "Incluir exploración, experimentación y oportunidades para utilizar la imaginación.",
+ "Reservar momentos para que los estudiantes expliquen qué valor encuentran en la actividad y cómo la mejorarían."
+ ],
+ example:"Para estudiar las medidas, el grupo puede diseñar un pequeño huerto, elaborar una maqueta o planear la distribución de un aula. Cada opción requiere comparar longitudes y justificar decisiones.",
+ url:"https://udlguidelines.cast.org/es/compromiso/intereses-identidades/relevancia-valor-autenticidad/"
+},
+"7.3":{
+ paragraphs:[
+ "El juego y la alegría pueden sostener la curiosidad y facilitar que las personas prueben estrategias sin temor a equivocarse. Las experiencias lúdicas pueden incluir movimiento, exploración sensorial, narraciones, creación artística y desafíos de descubrimiento.",
+ "El modo de disfrutar una actividad no es igual para todos. Un juego competitivo puede motivar a algunos estudiantes y desanimar a otros; por ello es preferible ofrecer opciones de participación, ritmos y formas de interacción que permitan encontrar sentido y bienestar."
+ ],
+ actions:[
+ "Crear oportunidades de juego simbólico, exploración libre o actividades artísticas relacionadas con la meta.",
+ "Permitir experimentar y descubrir antes de pedir una respuesta definitiva.",
+ "Ofrecer alternativas de participación individual o colaborativa cuando resulte pertinente.",
+ "Utilizar historias y situaciones imaginativas para abrir posibilidades de aprendizaje.",
+ "Reconocer los logros sin convertir toda la experiencia en una competencia."
+ ],
+ example:"En inicial, el grupo explora un mercado simulado con objetos, etiquetas y roles voluntarios. Puede contar productos, conversar sobre compras o inventar historias, con apoyos para distintas formas de comunicación.",
+ url:"https://udlguidelines.cast.org/es/compromiso/intereses-identidades/juego-alegr%C3%ADa/"
+},
+"7.4":{
+ paragraphs:[
+ "Las barreras para el compromiso pueden aparecer cuando el ambiente resulta impredecible, excluyente o difícil de habitar: comentarios discriminatorios, temor a la evaluación pública, estímulos excesivos o instrucciones poco claras pueden apartar la atención de la meta educativa.",
+ "El propósito no es eliminar cualquier desafío, sino identificar condiciones que generan riesgos innecesarios y ofrecer maneras de participar con seguridad y dignidad. El docente también debe revisar sus propias expectativas y estar abierto a la información que aportan los estudiantes sobre las barreras."
+ ],
+ actions:[
+ "Conversar sobre prejuicios, trato respetuoso y situaciones que dificultan la participación.",
+ "Hacer visibles rutinas, horarios, cambios y tiempos previstos mediante apoyos comprensibles.",
+ "Ofrecer anticipación y opciones para manejar interrupciones o eventos inesperados.",
+ "Ajustar ruido, iluminación, movimiento, pausas y duración de las actividades cuando resulte necesario.",
+ "Revisar si el tipo de evaluación o exposición pública crea barreras evitables y proporcionar apoyos apropiados.",
+ "Establecer acuerdos de aula y opciones de autorregulación para que los estudiantes puedan sentirse seguros."
+ ],
+ example:"Antes de una exposición, la docente anticipa el orden de participación y permite ensayar. Ofrece apoyos visuales, espacios con menos ruido y opciones de presentación equivalentes según la meta evaluada.",
+ url:"https://udlguidelines.cast.org/es/compromiso/intereses-identidades/sesgos-amenazas-distracciones/"
+}
+};
