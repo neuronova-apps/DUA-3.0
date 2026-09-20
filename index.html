@@ -54,8 +54,9 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .principle>.guideline:nth-of-type(2){grid-row:3}
 .principle>.guideline:nth-of-type(3){grid-row:4}
 .principle>.guideline{height:100%}
-.row-label{grid-column:1;background:#e5e8ec;color:#233848;border-radius:10px;display:flex;align-items:center;justify-content:center;min-width:0;padding:10px 0}
+.row-label{grid-column:1;background:#e5e8ec;color:#233848;border:0;border-radius:10px;display:flex;align-items:center;justify-content:center;min-width:0;padding:10px 0;cursor:pointer;font:inherit;transition:background-color .2s ease,box-shadow .2s ease}
 .row-label span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:.84rem;letter-spacing:.02em;font-weight:750;text-align:center}
+.row-label:hover,.row-label:focus-visible{background:#d2dfed;box-shadow:inset 0 0 0 2px #456582}
 .row-label[data-level="access"]{grid-row:2}
 .row-label[data-level="support"]{grid-row:3}
 .row-label[data-level="executive"]{grid-row:4}
@@ -66,10 +67,7 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 }
 @media(max-width:759px){
 .row-label{display:none}
-.principle>.guideline::before{display:block;font-size:.79rem;font-weight:700;color:var(--accent);margin-bottom:8px}
-.principle>.guideline:nth-of-type(1)::before{content:"Acceso"}
-.principle>.guideline:nth-of-type(2)::before{content:"Soporte"}
-.principle>.guideline:nth-of-type(3)::before{content:"Función ejecutiva"}
+.level-inline{display:block}
 .board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}
 }
 @media(min-width:630px) and (max-width:759px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
@@ -98,20 +96,18 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
  height:100%;
  padding:18px;
 }
-.principle>.guideline::before{
- display:block;
- margin-bottom:12px;
- font-size:.95rem;
- font-weight:750;
- color:var(--accent);
-}
-.principle>.guideline:nth-of-type(1)::before{content:"Acceso"}
-.principle>.guideline:nth-of-type(2)::before{content:"Soporte"}
-.principle>.guideline:nth-of-type(3)::before{content:"Función ejecutiva"}
+.level-inline{display:block;margin:0 0 12px}
 .principle-header h3{font-size:1.45rem}
 .guideline h4,.guide-open{font-size:1rem}
 .checkpoint{font-size:.94rem}
 }
+/* Los nombres de los niveles son controles operables con mouse, tacto y teclado. */
+.level-inline{display:none;border:0;border-radius:8px;background:#ffffff88;color:var(--accent);padding:5px 8px;margin:0 0 10px;text-align:left;cursor:pointer;font:inherit;font-weight:750;font-size:.95rem}
+.level-inline:hover,.level-inline:focus-visible{background:#fff;box-shadow:inset 0 0 0 2px var(--strong)}
+.level-dialog h2{margin:0 0 12px;font-size:1.5rem}
+.level-dialog .level-reference{margin-top:16px;font-size:.88rem;color:#405163}
+@media(min-width:1101px){.level-inline{display:none}}
+@media(max-width:1100px){.level-inline{display:block}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -148,6 +144,14 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 </div>
 <p><small>Explicación, orientaciones y ejemplo educativos originales de NeuroNova Apps fundamentados en CAST (2024); no son una transcripción del contenido oficial.</small></p>
 
+</dialog>
+<dialog id="level-dialog" class="level-dialog" aria-labelledby="level-title" aria-describedby="level-explanation">
+<button class="close" id="close-level" type="button" aria-label="Cerrar explicación">✕</button>
+<p class="modal-meta">Niveles transversales del DUA 3.0</p>
+<h2 id="level-title"></h2>
+<p id="level-explanation" class="modal-text"></p>
+<p id="level-relation" class="modal-text"></p>
+<p class="level-reference">Síntesis educativa de NeuroNova Apps basada en CAST (2024). Los niveles agrupan directrices; no son etapas que deban seguirse en orden obligatorio.</p>
 </dialog>
 <footer><div class="footer-content"><p>© 2026 NeuroNova Apps. Materiales educativos originales: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">CC BY-NC-SA 4.0</a>. Código propio: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p><p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a> · <a href="https://github.com/neuronova-apps/DUA-3.0">Repositorio en GitHub</a></p></div></footer>
 <script src="./dua-contenidos.js"></script>
@@ -243,6 +247,25 @@ function showDetail(trigger, principle, group, number, title, content){
  if(!dialog.open)dialog.showModal();
  dialog.scrollTop=0;
 }
+const LEVEL_DETAILS={
+ access:{title:"Acceso",explanation:"Reúne opciones para que todos puedan comenzar a participar en el aprendizaje: conectar con sus intereses, percibir la información e interactuar con materiales y actividades por vías accesibles.",relation:"Relaciona las directrices 7 (intereses e identidades), 1 (percepción) y 4 (interacción)."},
+ support:{title:"Soporte",explanation:"Agrupa apoyos que acompañan y sostienen el aprendizaje: mantener el esfuerzo, comprender el lenguaje y los símbolos, y disponer de distintas formas de expresar conocimientos e ideas.",relation:"Relaciona las directrices 8 (esfuerzo y persistencia), 2 (lenguaje y símbolos) y 5 (expresión y comunicación)."},
+ executive:{title:"Función ejecutiva",explanation:"Agrupa opciones para orientar el aprendizaje con mayor intención: reconocer y regular emociones, construir conocimientos, establecer metas, planificar y revisar los avances.",relation:"Relaciona las directrices 9 (capacidad emocional), 3 (construcción del conocimiento) y 6 (desarrollo de estrategias)."}
+};
+const levelDialog=document.getElementById("level-dialog");
+let lastLevelTrigger=null;
+function openLevel(level,trigger){
+ const info=LEVEL_DETAILS[level];
+ if(!info)return;
+ lastLevelTrigger=trigger;
+ document.getElementById("level-title").textContent=info.title;
+ document.getElementById("level-explanation").textContent=info.explanation;
+ document.getElementById("level-relation").textContent=info.relation;
+ if(!levelDialog.open)levelDialog.showModal();
+}
+document.getElementById("close-level").addEventListener("click",()=>levelDialog.close());
+levelDialog.addEventListener("click",event=>{if(event.target===levelDialog)levelDialog.close()});
+levelDialog.addEventListener("close",()=>lastLevelTrigger?.focus());
 for(const principle of principles){
  const section=document.createElement("section");section.className="principle";section.dataset.principle=principle.id;
  const head=document.createElement("div");head.className="principle-header";
@@ -252,6 +275,16 @@ for(const principle of principles){
  head.append(eyebrow,h3,subtitle);section.append(head);
  for(const group of principle.groups){
   const card=document.createElement("article");card.className="guideline";
+  const levelIndex=principle.groups.indexOf(group);
+  const levelNames=["Acceso","Soporte","Función ejecutiva"];
+  const levelIds=["access","support","executive"];
+  const levelButton=document.createElement("button");
+  levelButton.type="button";
+  levelButton.className="level-inline";
+  levelButton.textContent=levelNames[levelIndex]+" · ¿Qué significa?";
+  levelButton.setAttribute("aria-label","Explicar nivel "+levelNames[levelIndex]);
+  levelButton.addEventListener("click",()=>openLevel(levelIds[levelIndex],levelButton));
+  card.append(levelButton);
   const heading=document.createElement("h4");
   const prefix=document.createElement("span");prefix.className="small";prefix.textContent="Opciones de diseño para";
   const guideButton=document.createElement("button");guideButton.type="button";guideButton.className="guide-open";
@@ -273,13 +306,16 @@ heading.append(prefix,guideButton);card.append(heading);
  }board.append(section);
 }
 for(const [level,label] of [["access","Acceso"],["support","Soporte"],["executive","Función ejecutiva"]]){
- const rail=document.createElement("div");
+ const rail=document.createElement("button");
+ rail.type="button";
  rail.className="row-label";
  rail.dataset.level=level;
- rail.setAttribute("aria-label","Nivel "+label);
+ rail.setAttribute("aria-label","Explicar nivel "+label);
+ rail.setAttribute("aria-haspopup","dialog");
  const text=document.createElement("span");
  text.textContent=label;
  rail.append(text);
+ rail.addEventListener("click",()=>openLevel(level,rail));
  board.append(rail);
 }
 document.getElementById("detail-previous").addEventListener("click",()=>{
