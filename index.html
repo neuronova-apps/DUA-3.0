@@ -40,7 +40,7 @@ dialog .modal-actions button:not(:disabled):hover{background:#dbeefa}
 dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38px;height:38px;cursor:pointer}dialog .note{background:#eff4fa;border-left:4px solid #2b6898;padding:12px;margin:16px 0}
 
 /* Organización de CAST: tres principios como columnas y tres niveles como filas. */
-@media(min-width:960px){
+@media(min-width:760px){
 .board{grid-template-columns:48px repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(3,auto);align-items:stretch;gap:12px}
 .principle{display:contents}
 .principle:nth-of-type(1)>.principle-header{grid-column:2;grid-row:1}
@@ -60,11 +60,11 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .row-label[data-level="support"]{grid-row:3}
 .row-label[data-level="executive"]{grid-row:4}
 }
-@media(min-width:960px) and (hover:hover){
+@media(min-width:760px) and (hover:hover){
 /* Mantener fijas las pistas del grid evita redistribuir texto y saltos del cursor. */
 .principle-header:hover{box-shadow:0 8px 18px #17243326;transform:translateY(-2px) scale(1.008);z-index:1}
 }
-@media(max-width:959px){
+@media(max-width:759px){
 .row-label{display:none}
 .principle>.guideline::before{display:block;font-size:.79rem;font-weight:700;color:var(--accent);margin-bottom:8px}
 .principle>.guideline:nth-of-type(1)::before{content:"Acceso"}
@@ -72,7 +72,18 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .principle>.guideline:nth-of-type(3)::before{content:"Función ejecutiva"}
 .board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}
 }
-@media(min-width:630px) and (max-width:959px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
+@media(min-width:630px) and (max-width:759px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
+/* Ventanas de ancho intermedio: conservar rótulos laterales y reducir el espacio de las tarjetas. */
+@media(min-width:760px) and (max-width:1100px){
+.board{grid-template-columns:40px repeat(3,minmax(0,1fr));gap:9px}
+.principle-header{padding:14px 12px 20px;min-height:105px}
+.principle-header h3{font-size:1.12rem}
+.principle-header .eyebrow,.principle-header p{font-size:.79rem}
+.guideline{padding:12px 11px}
+.guideline h4,.guide-open{font-size:.91rem}
+.checkpoint{padding:4px 3px;font-size:.87rem}
+.row-label span{font-size:.77rem}
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
