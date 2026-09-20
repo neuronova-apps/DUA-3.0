@@ -113,11 +113,18 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .explore-tools>label{display:block;font-weight:750;margin-bottom:8px}
 .search-line{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
 .search-line input{min-width:0;flex:1 1 230px;padding:11px 13px;border:1px solid #90a9bd;border-radius:10px;font:inherit;color:#172433;background:#fff}
-.search-line button,.level-filters button{border:1px solid #a2bfd2;border-radius:10px;background:#f0f5fa;color:#173e61;padding:9px 13px;cursor:pointer;font:inherit;font-weight:650}
-.search-line button:hover,.level-filters button:hover{background:#e1eff9}
+.search-line button,.level-filters button,.principle-filters button{border:1px solid #a2bfd2;border-radius:10px;background:#f0f5fa;color:#173e61;padding:9px 13px;cursor:pointer;font:inherit;font-weight:650}
+.search-line button:hover,.level-filters button:hover,.principle-filters button:hover{background:#e1eff9}
 .tool-help{font-size:.85rem;color:#425567;margin:8px 0 13px}
 .level-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.level-filters>span{font-weight:700;margin-right:3px}
+.level-filters>span,.principle-filters>span{font-weight:700;margin-right:3px}
+.principle-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:11px}
+.principle-filters button[aria-pressed="true"]{background:#173e61;color:white;border-color:#173e61}
+.read-progress{font-size:.88rem;color:#365575;margin:4px 0 0}
+.board:focus{outline:none}
+.guide-open.is-read::after,.checkpoint.is-read::after{content:" ✓";color:var(--accent);font-size:.82em;font-weight:800}
+.guideline.is-principle-active{box-shadow:inset 0 0 0 2px var(--strong)}
+@media(max-width:759px){.principle-filters button{flex-grow:1}}
 .level-filters button[aria-pressed="true"]{background:#173e61;color:#fff;border-color:#173e61}
 .tool-status{font-size:.9rem;margin:12px 0 0;color:#385269}
 .search-results[hidden]{display:none}
@@ -161,10 +168,18 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <button type="button" data-filter="executive" aria-pressed="false">Función ejecutiva</button>
 <button type="button" data-filter="all" aria-pressed="true">Todos</button>
 </div>
+<div class="principle-filters" role="group" aria-label="Resaltar directrices por principio">
+<span>Resaltar principio:</span>
+<button type="button" data-principle-filter="engagement" aria-pressed="false">Compromiso</button>
+<button type="button" data-principle-filter="representation" aria-pressed="false">Representación</button>
+<button type="button" data-principle-filter="action" aria-pressed="false">Acción y expresión</button>
+<button type="button" data-principle-filter="all" aria-pressed="true">Todos</button>
+</div>
 <p id="dua-search-status" class="tool-status" role="status" aria-live="polite">Se muestran las 9 directrices y 36 consideraciones.</p>
+<p id="dua-read-progress" class="read-progress" role="status" aria-live="polite">Consultados: 0 de 45 apartados.</p>
 <div id="dua-search-results" class="search-results" aria-label="Resultados de búsqueda" hidden></div>
 </section>
-<div class="board" id="board" aria-label="Tres principios y nueve directrices del DUA"></div>
+<div class="board" id="board" tabindex="-1" aria-label="Tres principios y nueve directrices del DUA"></div>
 <section class="source" aria-labelledby="fuentes"><h2 id="fuentes">Fuente conceptual y atribución</h2><p>CAST. (2024). <em>CAST Universal Design for Learning Guidelines, version 3.0</em>. <a href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">Consultar las directrices oficiales en español ↗</a></p><p>Explorador independiente desarrollado por NeuroNova Apps. No es una publicación oficial ni cuenta con patrocinio o respaldo de CAST.</p></section>
 </main>
 <dialog id="detail" aria-labelledby="detail-title">
@@ -180,6 +195,7 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <div class="modal-actions" id="detail-navigation" hidden>
 <button type="button" id="detail-previous">← Anterior</button>
 <button type="button" id="detail-next">Siguiente →</button>
+<button type="button" id="detail-back-board">Volver al cuadro</button>
 </div>
 <p><small>Explicación, orientaciones y ejemplo educativos originales de NeuroNova Apps fundamentados en CAST (2024); no son una transcripción del contenido oficial.</small></p>
 
@@ -243,11 +259,35 @@ group.items=group.items.map((label,index)=>officialLabels[group.n+"."+(index+1)]
 const board=document.getElementById("board");
 const searchRecords=[];
 const levelMap={access:[7,1,4],support:[8,2,5],executive:[9,3,6]};
+const principleNames={engagement:"Compromiso",representation:"Representación",action:"Acción y expresión"};
+let activePrinciple="all";
+const readStorageKey="neuronova-dua-3-read-v1";
+let readIds=new Set();
+try{
+ const saved=JSON.parse(localStorage.getItem(readStorageKey)||"[]");
+ if(Array.isArray(saved))readIds=new Set(saved.filter(id=>typeof id==="string"));
+}catch(_error){/* La lectura continúa aun si el navegador bloquea el almacenamiento. */}
+function markRead(id){
+ if(!expandedOrder.includes(id))return;
+ readIds.add(id);
+ try{localStorage.setItem(readStorageKey,JSON.stringify([...readIds]))}catch(_error){}
+ refreshReadIndicator();
+}
 let activeLevel="all";
 const searchInput=document.getElementById("dua-search");
 const results=document.getElementById("dua-search-results");
 const searchStatus=document.getElementById("dua-search-status");
 function normalized(text){return String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es").trim();}
+function refreshReadIndicator(){
+ let count=0;
+ for(const record of searchRecords){
+  const visited=readIds.has(record.ref);
+  record.trigger.classList.toggle("is-read",visited);
+  if(visited)count++;
+ }
+ document.getElementById("dua-read-progress").textContent=
+  "Consultados: "+count+" de "+searchRecords.length+" apartados (9 directrices y 36 consideraciones).";
+}
 function recordSearch(ref,title,principle,content,card,trigger){
  const extended=window.DUA_EXPANDED?.[ref];
  const fields=[ref,title,principle.name,...(content||[]),...(extended?.paragraphs||[]),...(extended?.actions||[]),extended?.example||""];
@@ -273,6 +313,7 @@ function showDetail(trigger, principle, group, number, title, content){
  if(!content)return;
  if(!dialog.open)lastTrigger=trigger;
  activeDetail=number;
+ markRead(number);
  document.getElementById("detail-meta").textContent=principle.name+" · "+(number.includes(".")?"Consideración ":"Directriz ")+number;
  document.getElementById("detail-title").textContent=title;
  document.getElementById("detail-explanation").textContent=content[0];
@@ -327,6 +368,7 @@ for(const principle of principles){
  for(const group of principle.groups){
   const card=document.createElement("article");card.className="guideline";
   card.dataset.guideline=String(group.n);
+  card.dataset.principle=principle.id;
   const levelIndex=principle.groups.indexOf(group);
   const levelNames=["Acceso","Soporte","Función ejecutiva"];
   const levelIds=["access","support","executive"];
@@ -375,6 +417,13 @@ for(const [level,label] of [["access","Acceso"],["support","Soporte"],["executiv
  board.append(rail);
 }
 /* Búsqueda y resaltado optativos: no esconden tarjetas ni alteran la matriz o los diálogos. */
+function setPrinciple(principle){
+ activePrinciple=principleNames[principle]?principle:"all";
+ for(const button of document.querySelectorAll(".principle-filters button")){
+  button.setAttribute("aria-pressed",String(button.dataset.principleFilter===activePrinciple));
+ }
+ renderExploration();
+}
 function setLevel(level){
  activeLevel=levelMap[level]?level:"all";
  for(const button of document.querySelectorAll(".level-filters button")){
@@ -389,9 +438,12 @@ function renderExploration(){
  const allowed=levelMap[activeLevel]||null;
  for(const card of board.querySelectorAll(".guideline")){
   const levelMatch=!allowed||allowed.includes(Number(card.dataset.guideline));
+  const principleMatch=activePrinciple==="all"||card.dataset.principle===activePrinciple;
   const textMatch=!query||matchingCards.has(card);
-  card.classList.toggle("is-highlighted",(!!query&&textMatch)|| (!!allowed&&levelMatch));
-  card.classList.toggle("is-dimmed",!levelMatch||!textMatch);
+  const withinFilters=levelMatch&&principleMatch;
+  card.classList.toggle("is-highlighted",withinFilters&&((!!query&&textMatch)||!!allowed));
+  card.classList.toggle("is-principle-active",withinFilters&&activePrinciple!=="all");
+  card.classList.toggle("is-dimmed",!withinFilters||!textMatch);
  }
  for(const record of searchRecords){
   record.trigger.classList.toggle("search-match",!!query&&matched.includes(record));
@@ -410,7 +462,7 @@ function renderExploration(){
    const item=document.createElement("button");
    item.type="button";item.className="search-result";
    const title=document.createElement("strong");title.textContent=record.ref+" · "+record.title;
-   const subtitle=document.createElement("small");subtitle.textContent=record.principle+" · Abrir explicación";
+   const subtitle=document.createElement("small");subtitle.textContent=record.principle+" · "+(readIds.has(record.ref)?"Consultado · ":"")+"Abrir explicación";
    item.append(title,subtitle);
    item.addEventListener("click",()=>{
     record.card.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});
@@ -420,9 +472,11 @@ function renderExploration(){
   }
  }
  const levelName=activeLevel==="all"?"todos los niveles":LEVEL_DETAILS[activeLevel].title;
+ const principleName=activePrinciple==="all"?"todos los principios":principleNames[activePrinciple];
  searchStatus.textContent=query
-  ?matched.length+" resultado"+(matched.length===1?"":"s")+" para «"+searchInput.value.trim()+"»; resaltado en "+levelName+"."
-  :"Se muestran las 9 directrices y 36 consideraciones; "+levelName+(activeLevel==="all"?".":" resaltado.");
+  ?matched.length+" resultado"+(matched.length===1?"":"s")+" para «"+searchInput.value.trim()+"»; resaltado en "+levelName+" y "+principleName+"."
+  :"Se muestran las 9 directrices y 36 consideraciones; "+levelName+" y "+principleName+".";
+ refreshReadIndicator();
 }
 searchInput.addEventListener("input",renderExploration);
 searchInput.addEventListener("search",renderExploration);
@@ -430,7 +484,17 @@ document.getElementById("dua-clear").addEventListener("click",()=>{searchInput.v
 for(const button of document.querySelectorAll(".level-filters button")){
  button.addEventListener("click",()=>setLevel(button.dataset.filter));
 }
+for(const button of document.querySelectorAll(".principle-filters button")){
+ button.addEventListener("click",()=>setPrinciple(button.dataset.principleFilter));
+}
 renderExploration();
+document.getElementById("detail-back-board").addEventListener("click",()=>{
+ dialog.close();
+ requestAnimationFrame(()=>{
+  board.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});
+  board.focus({preventScroll:true});
+ });
+});
 document.getElementById("detail-previous").addEventListener("click",()=>{
  const index=expandedOrder.indexOf(activeDetail);
  if(index>0)openExpanded(expandedOrder[index-1],lastTrigger);
