@@ -73,16 +73,44 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}
 }
 @media(min-width:630px) and (max-width:759px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
-/* Ventanas de ancho intermedio: conservar rótulos laterales y reducir el espacio de las tarjetas. */
+/* Ventanas intermedias: cada principio conserva tres tarjetas con niveles visibles. */
 @media(min-width:760px) and (max-width:1100px){
-.board{grid-template-columns:40px repeat(3,minmax(0,1fr));gap:9px}
-.principle-header{padding:14px 12px 20px;min-height:105px}
-.principle-header h3{font-size:1.12rem}
-.principle-header .eyebrow,.principle-header p{font-size:.79rem}
-.guideline{padding:12px 11px}
-.guideline h4,.guide-open{font-size:.91rem}
-.checkpoint{padding:4px 3px;font-size:.87rem}
-.row-label span{font-size:.77rem}
+.board{display:block}
+.row-label{display:none}
+.principle{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;
+ margin-bottom:18px;
+ min-width:0;
+}
+.principle>.principle-header{
+ grid-column:1/-1 !important;
+ grid-row:auto !important;
+ height:auto;
+ min-height:110px;
+ padding:18px 20px 24px;
+}
+.principle>.guideline{
+ grid-column:auto !important;
+ grid-row:auto !important;
+ min-width:0;
+ height:100%;
+ padding:18px;
+}
+.principle>.guideline::before{
+ display:block;
+ margin-bottom:12px;
+ font-size:.95rem;
+ font-weight:750;
+ color:var(--accent);
+}
+.principle>.guideline:nth-of-type(1)::before{content:"Acceso"}
+.principle>.guideline:nth-of-type(2)::before{content:"Soporte"}
+.principle>.guideline:nth-of-type(3)::before{content:"Función ejecutiva"}
+.principle-header h3{font-size:1.45rem}
+.guideline h4,.guide-open{font-size:1rem}
+.checkpoint{font-size:.94rem}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
