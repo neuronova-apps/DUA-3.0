@@ -39,6 +39,10 @@ footer{background:#e6edf5;margin-top:28px;font-size:.88rem}footer p{margin:6px 0
 dialog{border:0;border-radius:18px;max-width:min(620px,calc(100% - 28px));width:100%;padding:26px;box-shadow:0 25px 70px #0005;color:#172433}
 dialog::backdrop{background:#102438a8}
 dialog{max-height:min(85vh,850px);overflow-y:auto}dialog h2{font-size:1.4rem;margin:0 0 10px}dialog h3{margin:16px 0 5px;font-size:1rem}dialog .modal-text{margin:0 0 12px;line-height:1.65}.guide-open{display:block;width:100%;text-align:left;background:transparent;border:0;color:inherit;font-weight:750;font-size:1rem;line-height:1.35;padding:3px 0;cursor:pointer}.guide-open:hover{text-decoration:underline}.guide-open .hint{font-size:.75rem;font-weight:500;display:block;color:#34526b}.detail-example{background:#e6f2fb;padding:13px 16px;border-left:4px solid #1870a3;border-radius:8px}dialog .modal-meta{font-weight:700;font-size:.85rem;color:#355878;margin:0 0 7px}
+dialog .expanded{margin:12px 0}dialog .expanded[hidden]{display:none}dialog .expanded p{line-height:1.7;margin:0 0 13px}dialog .expanded ul{padding-left:24px;line-height:1.65}dialog .expanded li{margin:7px 0}
+dialog .modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0 4px}
+dialog .modal-actions[hidden]{display:none}dialog .modal-actions button{border:1px solid #a7c1d4;background:#edf5fb;color:#16466b;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:650}dialog .modal-actions button:disabled{opacity:.48;cursor:default}
+dialog .modal-actions button:not(:disabled):hover{background:#dbeefa}
 dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38px;height:38px;cursor:pointer}dialog .note{background:#eff4fa;border-left:4px solid #2b6898;padding:12px;margin:16px 0}
 @media(max-width:959px){.board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}}
 @media(min-width:630px) and (max-width:959px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
@@ -66,8 +70,17 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <button class="close" id="close" type="button" aria-label="Cerrar detalle">✕</button>
 <p class="modal-meta" id="detail-meta"></p><h2 id="detail-title"></h2>
 <h3>¿Qué significa?</h3><p class="modal-text" id="detail-explanation"></p>
+<div class="expanded" id="detail-expanded" hidden>
+<div id="detail-paragraphs"></div>
+<h3>Orientaciones para la práctica educativa</h3>
+<ul id="detail-actions"></ul>
+</div>
 <h3>Ejemplo de aplicación educativa</h3><p class="modal-text detail-example" id="detail-example"></p>
-<p><small>Explicación y ejemplo originales de NeuroNova Apps fundamentados en CAST (2024), no transcripción de las directrices.</small></p>
+<div class="modal-actions" id="detail-navigation" hidden>
+<button type="button" id="detail-previous">← Anterior</button>
+<button type="button" id="detail-next">Siguiente →</button>
+</div>
+<p><small>Explicación, orientaciones y ejemplo educativos originales de NeuroNova Apps fundamentados en CAST (2024); no son una transcripción del contenido oficial.</small></p>
 <p><a id="official" href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">Consultar el contenido completo en CAST (2024) ↗</a></p>
 </dialog>
 <footer><div class="footer-content"><p>© 2026 NeuroNova Apps. Materiales educativos originales: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">CC BY-NC-SA 4.0</a>. Código propio: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p><p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a> · <a href="https://github.com/neuronova-apps/DUA-3.0">Repositorio en GitHub</a></p></div></footer>
@@ -121,14 +134,45 @@ group.items=group.items.map((label,index)=>officialLabels[group.n+"."+(index+1)]
 const board=document.getElementById("board");
 const dialog=document.getElementById("detail");
 let lastTrigger=null;
+const expandedOrder=["7","7.1","7.2","7.3","7.4"];
+let activeDetail=null;
+function openExpanded(number,trigger){
+ const group=principles[0].groups[0];
+ const title=number==="7"?group.name:group.items[Number(number.split(".")[1])-1];
+ const content=number==="7"?DUA_DETAILS.guidelines[7].slice(1):DUA_DETAILS.considerations[number];
+ return showDetail(trigger,principles[0],group,number,title,content);
+}
 function showDetail(trigger, principle, group, number, title, content){
- if(!content || dialog.open)return;
- lastTrigger=trigger;
+ if(!content)return;
+ if(!dialog.open)lastTrigger=trigger;
+ activeDetail=number;
  document.getElementById("detail-meta").textContent=principle.name+" · "+(number.includes(".")?"Consideración ":"Directriz ")+number;
  document.getElementById("detail-title").textContent=title;
  document.getElementById("detail-explanation").textContent=content[0];
- document.getElementById("detail-example").textContent=content[1];
- dialog.showModal();
+ const extended=window.DUA_EXPANDED?.[number];
+ document.getElementById("detail-example").textContent=extended?.example||content[1];
+ const expanded=document.getElementById("detail-expanded");
+ const paragraphs=document.getElementById("detail-paragraphs");
+ const actions=document.getElementById("detail-actions");
+ paragraphs.replaceChildren();actions.replaceChildren();
+ expanded.hidden=!extended;
+ document.getElementById("detail-explanation").hidden=Boolean(extended);
+ if(extended){
+   for(const text of extended.paragraphs){const p=document.createElement("p");p.textContent=text;paragraphs.append(p)}
+   for(const text of extended.actions){const li=document.createElement("li");li.textContent=text;actions.append(li)}
+ }
+ const nav=document.getElementById("detail-navigation");
+ nav.hidden=!extended;
+ if(extended){
+  const index=expandedOrder.indexOf(number);
+  document.getElementById("detail-previous").disabled=index===0;
+  document.getElementById("detail-next").disabled=index===expandedOrder.length-1;
+  document.getElementById("official").href=extended.url;
+ }else{
+  document.getElementById("official").href="https://udlguidelines.cast.org/es/";
+ }
+ if(!dialog.open)dialog.showModal();
+ dialog.scrollTop=0;
 }
 for(const principle of principles){
  const section=document.createElement("section");section.className="principle";section.dataset.principle=principle.id;
@@ -159,6 +203,14 @@ heading.append(prefix,guideButton);card.append(heading);
   });card.append(list);section.append(card);
  }board.append(section);
 }
+document.getElementById("detail-previous").addEventListener("click",()=>{
+ const index=expandedOrder.indexOf(activeDetail);
+ if(index>0)openExpanded(expandedOrder[index-1],lastTrigger);
+});
+document.getElementById("detail-next").addEventListener("click",()=>{
+ const index=expandedOrder.indexOf(activeDetail);
+ if(index>=0&&index<expandedOrder.length-1)openExpanded(expandedOrder[index+1],lastTrigger);
+});
 document.getElementById("close").addEventListener("click",()=>dialog.close());
 dialog.addEventListener("click",event=>{if(event.target===dialog)dialog.close()});
 dialog.addEventListener("close",()=>lastTrigger?.focus());
