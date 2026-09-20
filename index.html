@@ -27,12 +27,6 @@ main,.footer-content{max-width:1440px;margin:auto;padding:22px 20px}
 .guideline ul{list-style:none;padding:0;margin:0;display:grid;gap:5px}
 .checkpoint{width:100%;text-align:left;border:0;border-radius:8px;background:transparent;color:#172433;padding:5px 7px;cursor:pointer;line-height:1.45;transition:background .18s ease}
 .checkpoint:hover,.checkpoint:focus-visible{background:#ffffffaa}.checkpoint .number{font-size:.79rem;font-weight:700;color:var(--accent);white-space:nowrap}.checkpoint .arrow{color:var(--accent);font-weight:800}
-@media(min-width:960px) and (hover:hover){
-.board:has(.principle:nth-child(1):hover){grid-template-columns:1.18fr .91fr .91fr}
-.board:has(.principle:nth-child(2):hover){grid-template-columns:.91fr 1.18fr .91fr}
-.board:has(.principle:nth-child(3):hover){grid-template-columns:.91fr .91fr 1.18fr}
-.principle:hover .principle-header{box-shadow:0 12px 26px #17243330;transform:translateY(-2px)}
-}
 .source{border:1px solid #cbd8e4;background:white;border-radius:15px;margin-top:23px;padding:16px 20px}
 .source h2{font-size:1.1rem;margin:0 0 7px}.source p{margin:5px 0;font-size:.93rem}
 footer{background:#e6edf5;margin-top:28px;font-size:.88rem}footer p{margin:6px 0}
@@ -45,39 +39,38 @@ dialog .modal-actions[hidden]{display:none}dialog .modal-actions button{border:1
 dialog .modal-actions button:not(:disabled):hover{background:#dbeefa}
 dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38px;height:38px;cursor:pointer}dialog .note{background:#eff4fa;border-left:4px solid #2b6898;padding:12px;margin:16px 0}
 
-/* Filas transversales de CAST: acceso, soporte y función ejecutiva. */
+/* Matriz DUA: principios en filas y niveles en columnas. */
 @media(min-width:960px){
-.board{grid-template-columns:40px repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(3,auto);align-items:stretch;gap:12px}
+.board{grid-template-columns:minmax(160px,.72fr) repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(3,auto);align-items:stretch;gap:12px}
 .principle{display:contents}
-.principle:nth-of-type(1)>.principle-header{grid-column:2;grid-row:1}
-.principle:nth-of-type(2)>.principle-header{grid-column:3;grid-row:1}
-.principle:nth-of-type(3)>.principle-header{grid-column:4;grid-row:1}
-.principle:nth-of-type(1)>.guideline{grid-column:2}
-.principle:nth-of-type(2)>.guideline{grid-column:3}
-.principle:nth-of-type(3)>.guideline{grid-column:4}
-.principle>.guideline:nth-of-type(1){grid-row:2}
-.principle>.guideline:nth-of-type(2){grid-row:3}
-.principle>.guideline:nth-of-type(3){grid-row:4}
-.row-label{grid-column:1;background:#e5e8ec;color:#243545;border-radius:10px;display:flex;align-items:center;justify-content:center;min-width:0;padding:10px 0}
-.row-label span{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:750;letter-spacing:.025em;font-size:.82rem}
-.row-label[data-level="access"]{grid-row:2}
-.row-label[data-level="support"]{grid-row:3}
-.row-label[data-level="executive"]{grid-row:4}
+.principle:nth-of-type(1)>.principle-header{grid-column:1;grid-row:2}
+.principle:nth-of-type(2)>.principle-header{grid-column:1;grid-row:3}
+.principle:nth-of-type(3)>.principle-header{grid-column:1;grid-row:4}
+.principle>.principle-header{display:flex;flex-direction:column;justify-content:center;height:100%;padding:22px 18px}
+.principle>.principle-header::after{height:0}
+.principle:nth-of-type(1)>.guideline{grid-row:2}
+.principle:nth-of-type(2)>.guideline{grid-row:3}
+.principle:nth-of-type(3)>.guideline{grid-row:4}
+.principle>.guideline:nth-of-type(1){grid-column:2}
+.principle>.guideline:nth-of-type(2){grid-column:3}
+.principle>.guideline:nth-of-type(3){grid-column:4}
 .principle>.guideline{height:100%}
+.level-label{display:flex;justify-content:center;align-items:center;gap:8px;border-radius:12px;background:#e5e8ec;color:#233848;padding:14px 10px;text-align:center;font-weight:750;min-width:0}
+.level-label[data-level="access"]{grid-column:2;grid-row:1}
+.level-label[data-level="support"]{grid-column:3;grid-row:1}
+.level-label[data-level="executive"]{grid-column:4;grid-row:1}
 }
 @media(min-width:960px) and (hover:hover){
-.board:has(.principle:nth-of-type(1):hover){grid-template-columns:40px 1.18fr .91fr .91fr}
-.board:has(.principle:nth-of-type(2):hover){grid-template-columns:40px .91fr 1.18fr .91fr}
-.board:has(.principle:nth-of-type(3):hover){grid-template-columns:40px .91fr .91fr 1.18fr}
+.principle-header:hover{box-shadow:0 12px 26px #17243330;transform:translateY(-2px)}
 }
 @media(max-width:959px){
-.row-label{display:none}
+.level-label{display:none}
 .principle>.guideline::before{display:block;font-size:.79rem;font-weight:700;color:var(--accent);margin-bottom:8px}
 .principle>.guideline:nth-of-type(1)::before{content:"Acceso"}
 .principle>.guideline:nth-of-type(2)::before{content:"Soporte"}
 .principle>.guideline:nth-of-type(3)::before{content:"Función ejecutiva"}
+.board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}
 }
-@media(max-width:959px){.board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}}
 @media(min-width:630px) and (max-width:959px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
@@ -240,12 +233,12 @@ heading.append(prefix,guideButton);card.append(heading);
  }board.append(section);
 }
 for(const [level,label] of [["access","Acceso"],["support","Soporte"],["executive","Función ejecutiva"]]){
- const rail=document.createElement("div");
- rail.className="row-label";
- rail.dataset.level=level;
- rail.setAttribute("aria-label","Nivel "+label);
- const text=document.createElement("span");text.textContent=label;
- rail.append(text);board.append(rail);
+ const heading=document.createElement("div");
+ heading.className="level-label";
+ heading.dataset.level=level;
+ heading.setAttribute("aria-label","Nivel "+label);
+ heading.textContent=label;
+ board.append(heading);
 }
 document.getElementById("detail-previous").addEventListener("click",()=>{
  const index=expandedOrder.indexOf(activeDetail);
