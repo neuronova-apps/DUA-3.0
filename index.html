@@ -38,7 +38,7 @@ main,.footer-content{max-width:1440px;margin:auto;padding:22px 20px}
 footer{background:#e6edf5;margin-top:28px;font-size:.88rem}footer p{margin:6px 0}
 dialog{border:0;border-radius:18px;max-width:min(620px,calc(100% - 28px));width:100%;padding:26px;box-shadow:0 25px 70px #0005;color:#172433}
 dialog::backdrop{background:#102438a8}
-dialog h2{font-size:1.4rem;margin:0 0 10px}dialog .modal-meta{font-weight:700;font-size:.85rem;color:#355878;margin:0 0 7px}
+dialog{max-height:min(85vh,850px);overflow-y:auto}dialog h2{font-size:1.4rem;margin:0 0 10px}dialog h3{margin:16px 0 5px;font-size:1rem}dialog .modal-text{margin:0 0 12px;line-height:1.65}.guide-open{display:block;width:100%;text-align:left;background:transparent;border:0;color:inherit;font-weight:750;font-size:1rem;line-height:1.35;padding:3px 0;cursor:pointer}.guide-open:hover{text-decoration:underline}.guide-open .hint{font-size:.75rem;font-weight:500;display:block;color:#34526b}.detail-example{background:#e6f2fb;padding:13px 16px;border-left:4px solid #1870a3;border-radius:8px}dialog .modal-meta{font-weight:700;font-size:.85rem;color:#355878;margin:0 0 7px}
 dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38px;height:38px;cursor:pointer}dialog .note{background:#eff4fa;border-left:4px solid #2b6898;padding:12px;margin:16px 0}
 @media(max-width:959px){.board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}}
 @media(min-width:630px) and (max-width:959px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
@@ -50,7 +50,7 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <header class="hero">
 <div class="brand">NeuroNova Apps · Recursos educativos</div>
 <h1>Pautas de Diseño Universal para el Aprendizaje</h1>
-<p>DUA 3.0 · Explora los principios, las directrices y sus consideraciones. Pasa el cursor sobre cada columna o selecciona una consideración para consultar su referencia.</p>
+<p>DUA 3.0 · Explora los principios, las directrices y sus consideraciones. Pasa el cursor sobre una columna y selecciona cualquier directriz o consideración para ver su explicación y un ejemplo pedagógico.</p>
 </header>
 <nav aria-label="Navegación del sitio" style="background:#e8f0f8;padding:12px 20px;display:flex;flex-wrap:wrap;gap:18px;font-weight:650">
 <a href="./index.html" aria-current="page">Explorador DUA 3.0</a>
@@ -58,17 +58,20 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <a href="./recursos.html">Centro de recursos DUA →</a>
 </nav>
 <main id="contenido">
-<section class="intro" aria-labelledby="explora"><h2 id="explora">Explora los tres principios del DUA 3.0</h2><p>La organización y numeración toman como referencia a CAST (2024). En celulares, toca cada consideración para conocerla.</p></section>
+<section class="intro" aria-labelledby="explora"><h2 id="explora">Explora los tres principios del DUA 3.0</h2><p>La estructura y numeración siguen CAST (2024). Selecciona las directrices 1 a 9 o cualquiera de sus 36 consideraciones para explorar explicaciones y ejemplos propios de NeuroNova Apps.</p></section>
 <div class="board" id="board" aria-label="Tres principios y nueve directrices del DUA"></div>
 <section class="source" aria-labelledby="fuentes"><h2 id="fuentes">Fuente conceptual y atribución</h2><p>CAST. (2024). <em>CAST Universal Design for Learning Guidelines, version 3.0</em>. <a href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">Consultar las directrices oficiales en español ↗</a></p><p>Explorador independiente desarrollado por NeuroNova Apps. No es una publicación oficial ni cuenta con patrocinio o respaldo de CAST.</p></section>
 </main>
 <dialog id="detail" aria-labelledby="detail-title">
 <button class="close" id="close" type="button" aria-label="Cerrar detalle">✕</button>
 <p class="modal-meta" id="detail-meta"></p><h2 id="detail-title"></h2>
-<div class="note">Esta primera versión presenta el esquema interactivo. Las explicaciones pedagógicas, estrategias y casos prácticos propios se incorporarán en una etapa posterior.</div>
-<p>Para consultar la explicación completa de esta consideración, utiliza la <a id="official" href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">fuente oficial de CAST (2024) ↗</a>.</p>
+<h3>¿Qué significa?</h3><p class="modal-text" id="detail-explanation"></p>
+<h3>Ejemplo de aplicación educativa</h3><p class="modal-text detail-example" id="detail-example"></p>
+<p><small>Explicación y ejemplo originales de NeuroNova Apps fundamentados en CAST (2024), no transcripción de las directrices.</small></p>
+<p><a id="official" href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">Consultar el contenido completo en CAST (2024) ↗</a></p>
 </dialog>
 <footer><div class="footer-content"><p>© 2026 NeuroNova Apps. Materiales educativos originales: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">CC BY-NC-SA 4.0</a>. Código propio: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p><p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a> · <a href="https://github.com/neuronova-apps/DUA-3.0">Repositorio en GitHub</a></p></div></footer>
+<script src="./dua-contenidos.js"></script>
 <script>
 "use strict";
 // Denominaciones transcritas de la lámina en español proporcionada como referencia por el usuario.
@@ -88,9 +91,45 @@ const principles=[
 {n:5,name:"Expresión y la comunicación",items:["Usar múltiples medios para la comunicación","Usar múltiples herramientas para la construcción, composición y creatividad","Desarrollar fluidez con apoyo gradual para la práctica y el desempeño","Abordar los sesgos relacionados con los modos de expresión y comunicación"]},
 {n:6,name:"Desarrollo de estrategias",items:["Establecer objetivos significativos","Planificar y anticipar los desafíos","Organizar la información y los recursos","Mejorar la capacidad para controlar el progreso","Desafiar las prácticas excluyentes"]}
 ]}];
+// Ajustes de nomenclatura según los títulos de la versión oficial en español de CAST.
+const officialLabels={
+"1.3":"Representar una diversidad de perspectivas e identidades de maneras auténticas",
+"2.1":"Aclarar vocabulario, símbolos y estructuras del lenguaje",
+"2.2":"Apoyar la decodificación de texto, notación matemática y símbolos",
+"2.3":"Cultivar la comprensión y el respeto entre lenguas y dialectos",
+"3.2":"Resaltar y explorar patrones, características críticas, grandes ideas y relaciones",
+"3.3":"Cultivar múltiples formas de conocer y dar significado",
+"3.4":"Maximizar la transferencia y la generalización",
+"4.1":"Variar y valorar los métodos de respuesta, navegación y movimiento",
+"4.2":"Optimizar el acceso a materiales accesibles y a tecnologías y herramientas de asistencia y accesibilidad",
+"5.2":"Usar múltiples herramientas para la construcción, la composición y la creatividad",
+"5.3":"Desarrollar fluidez con apoyos graduados para la práctica y el desempeño",
+"5.4":"Abordar sesgos relacionados con los modos de expresión y comunicación",
+"6.1":"Establecer metas significativas","6.2":"Anticipar y planificar los desafíos",
+"6.4":"Ampliar la capacidad para dar seguimiento al progreso",
+"7.1":"Optimizar la elección y la autonomía","7.3":"Fomentar la alegría y el juego",
+"7.4":"Abordar los sesgos, las amenazas y las distracciones",
+"8.1":"Aclarar el significado y el propósito de las metas",
+"8.2":"Optimizar los desafíos y el apoyo",
+"8.5":"Ofrecer retroalimentación orientada a la acción",
+"9.2":"Desarrollar la conciencia de sí mismo y de los demás",
+"9.4":"Cultivar la empatía y las prácticas restaurativas"};
+for(const principle of principles)for(const group of principle.groups){
+group.name=DUA_DETAILS.guidelines[group.n][0];
+group.items=group.items.map((label,index)=>officialLabels[group.n+"."+(index+1)]||label);
+}
 const board=document.getElementById("board");
 const dialog=document.getElementById("detail");
 let lastTrigger=null;
+function showDetail(trigger, principle, group, number, title, content){
+ if(!content || dialog.open)return;
+ lastTrigger=trigger;
+ document.getElementById("detail-meta").textContent=principle.name+" · "+(number.includes(".")?"Consideración ":"Directriz ")+number;
+ document.getElementById("detail-title").textContent=title;
+ document.getElementById("detail-explanation").textContent=content[0];
+ document.getElementById("detail-example").textContent=content[1];
+ dialog.showModal();
+}
 for(const principle of principles){
  const section=document.createElement("section");section.className="principle";section.dataset.principle=principle.id;
  const head=document.createElement("div");head.className="principle-header";
@@ -102,7 +141,12 @@ for(const principle of principles){
   const card=document.createElement("article");card.className="guideline";
   const heading=document.createElement("h4");
   const prefix=document.createElement("span");prefix.className="small";prefix.textContent="Opciones de diseño para";
-  heading.append(prefix,document.createTextNode(group.name+" ("+group.n+")"));card.append(heading);
+  const guideButton=document.createElement("button");guideButton.type="button";guideButton.className="guide-open";
+guideButton.append(document.createTextNode(group.name+" ("+group.n+")"));
+const guideHint=document.createElement("span");guideHint.className="hint";guideHint.textContent="Ver explicación y ejemplo ↗";guideButton.append(guideHint);
+guideButton.setAttribute("aria-label","Consultar directriz "+group.n+": "+group.name);
+guideButton.addEventListener("click",()=>showDetail(guideButton,principle,group,String(group.n),group.name,DUA_DETAILS.guidelines[group.n].slice(1)));
+heading.append(prefix,guideButton);card.append(heading);
   const list=document.createElement("ul");
   group.items.forEach((label,index)=>{
    const number=group.n+"."+(index+1);
@@ -111,12 +155,7 @@ for(const principle of principles){
    const arrow=document.createElement("span");arrow.className="arrow";arrow.setAttribute("aria-hidden","true");arrow.textContent=" ›";
    button.append(document.createTextNode("• "+label),num,arrow);
    button.setAttribute("aria-label","Abrir consideración "+number+": "+label);
-   button.addEventListener("click",()=>{
-    lastTrigger=button;
-    document.getElementById("detail-meta").textContent=principle.name+" · Directriz "+group.n+" · Consideración "+number;
-    document.getElementById("detail-title").textContent=label;
-    dialog.showModal();
-   });li.append(button);list.append(li);
+   button.addEventListener("click",()=>showDetail(button,principle,group,number,label,DUA_DETAILS.considerations[number]));li.append(button);list.append(li);
   });card.append(list);section.append(card);
  }board.append(section);
 }
