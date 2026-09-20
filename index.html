@@ -14,15 +14,15 @@
 .hero h1{font-size:clamp(1.7rem,3.5vw,3rem);line-height:1.15;margin:.4rem 0}.hero p{max-width:900px;margin:.7rem 0 0}
 main,.footer-content{max-width:1440px;margin:auto;padding:22px 20px}
 .intro{margin:0 0 20px}.intro h2{margin:0 0 6px;font-size:1.25rem}.intro p{margin:0;color:#405163}
-.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start;transition:grid-template-columns .32s ease}
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
 .principle{min-width:0;display:flex;flex-direction:column;gap:12px;--strong:#087d44;--pale:#d3eddf;--accent:#0b613a}
 .principle[data-principle="representation"]{--strong:#6e508e;--pale:#e3d9ed;--accent:#50356d}
 .principle[data-principle="action"]{--strong:#0877ac;--pale:#d0eefb;--accent:#095c84}
 .principle-header{background:var(--strong);border-radius:20px;color:white;padding:20px 20px 25px;min-height:136px;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease}
 .principle-header::after{content:"";position:absolute;background:var(--pale);height:28px;bottom:-14px;left:-2%;width:105%;border-radius:50% 50% 0 0}
 .principle-header .eyebrow{font-size:.84rem;font-weight:650}.principle-header h3{font-size:clamp(1.2rem,2vw,1.65rem);line-height:1.2;margin:4px 0 8px}.principle-header p{font-size:.91rem;margin:0}
-.guideline{background:var(--pale);border:1px solid transparent;border-radius:17px;padding:16px 17px;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
-.guideline:hover,.guideline:focus-within{border-color:var(--strong);box-shadow:0 9px 24px #17243318;transform:translateY(-2px)}
+.guideline{background:var(--pale);border:1px solid transparent;border-radius:17px;padding:16px 17px;position:relative;transition:transform .22s ease-out,box-shadow .22s ease-out,border-color .18s ease}
+.guideline:hover,.guideline:focus-within{border-color:var(--strong);box-shadow:0 7px 16px #17243320;transform:translateY(-2px) scale(1.008);z-index:1}
 .guideline h4{font-size:1rem;line-height:1.35;margin:0 0 10px}.guideline .small{font-weight:400;font-size:.82rem;display:block}
 .guideline ul{list-style:none;padding:0;margin:0;display:grid;gap:5px}
 .checkpoint{width:100%;text-align:left;border:0;border-radius:8px;background:transparent;color:#172433;padding:5px 7px;cursor:pointer;line-height:1.45;transition:background .18s ease}
@@ -41,7 +41,7 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 
 /* Organización de CAST: tres principios como columnas y tres niveles como filas. */
 @media(min-width:960px){
-.board{grid-template-columns:48px repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(3,auto);align-items:stretch;gap:12px;transition:grid-template-columns .32s ease}
+.board{grid-template-columns:48px repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(3,auto);align-items:stretch;gap:12px}
 .principle{display:contents}
 .principle:nth-of-type(1)>.principle-header{grid-column:2;grid-row:1}
 .principle:nth-of-type(2)>.principle-header{grid-column:3;grid-row:1}
@@ -61,10 +61,8 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .row-label[data-level="executive"]{grid-row:4}
 }
 @media(min-width:960px) and (hover:hover){
-.board:has(.principle:nth-of-type(1):hover){grid-template-columns:48px 1.18fr .91fr .91fr}
-.board:has(.principle:nth-of-type(2):hover){grid-template-columns:48px .91fr 1.18fr .91fr}
-.board:has(.principle:nth-of-type(3):hover){grid-template-columns:48px .91fr .91fr 1.18fr}
-.principle-header:hover{box-shadow:0 12px 26px #17243330;transform:translateY(-2px)}
+/* Mantener fijas las pistas del grid evita redistribuir texto y saltos del cursor. */
+.principle-header:hover{box-shadow:0 8px 18px #17243326;transform:translateY(-2px) scale(1.008);z-index:1}
 }
 @media(max-width:959px){
 .row-label{display:none}
