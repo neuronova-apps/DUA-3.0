@@ -44,6 +44,39 @@ dialog .modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0 4px}
 dialog .modal-actions[hidden]{display:none}dialog .modal-actions button{border:1px solid #a7c1d4;background:#edf5fb;color:#16466b;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:650}dialog .modal-actions button:disabled{opacity:.48;cursor:default}
 dialog .modal-actions button:not(:disabled):hover{background:#dbeefa}
 dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38px;height:38px;cursor:pointer}dialog .note{background:#eff4fa;border-left:4px solid #2b6898;padding:12px;margin:16px 0}
+
+/* Filas transversales de CAST: acceso, soporte y función ejecutiva. */
+@media(min-width:960px){
+.board{grid-template-columns:40px repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(3,auto);align-items:stretch;gap:12px}
+.principle{display:contents}
+.principle:nth-of-type(1)>.principle-header{grid-column:2;grid-row:1}
+.principle:nth-of-type(2)>.principle-header{grid-column:3;grid-row:1}
+.principle:nth-of-type(3)>.principle-header{grid-column:4;grid-row:1}
+.principle:nth-of-type(1)>.guideline{grid-column:2}
+.principle:nth-of-type(2)>.guideline{grid-column:3}
+.principle:nth-of-type(3)>.guideline{grid-column:4}
+.principle>.guideline:nth-of-type(1){grid-row:2}
+.principle>.guideline:nth-of-type(2){grid-row:3}
+.principle>.guideline:nth-of-type(3){grid-row:4}
+.row-label{grid-column:1;background:#e5e8ec;color:#243545;border-radius:10px;display:flex;align-items:center;justify-content:center;min-width:0;padding:10px 0}
+.row-label span{writing-mode:vertical-rl;transform:rotate(180deg);font-weight:750;letter-spacing:.025em;font-size:.82rem}
+.row-label[data-level="access"]{grid-row:2}
+.row-label[data-level="support"]{grid-row:3}
+.row-label[data-level="executive"]{grid-row:4}
+.principle>.guideline{height:100%}
+}
+@media(min-width:960px) and (hover:hover){
+.board:has(.principle:nth-of-type(1):hover){grid-template-columns:40px 1.18fr .91fr .91fr}
+.board:has(.principle:nth-of-type(2):hover){grid-template-columns:40px .91fr 1.18fr .91fr}
+.board:has(.principle:nth-of-type(3):hover){grid-template-columns:40px .91fr .91fr 1.18fr}
+}
+@media(max-width:959px){
+.row-label{display:none}
+.principle>.guideline::before{display:block;font-size:.79rem;font-weight:700;color:var(--accent);margin-bottom:8px}
+.principle>.guideline:nth-of-type(1)::before{content:"Acceso"}
+.principle>.guideline:nth-of-type(2)::before{content:"Soporte"}
+.principle>.guideline:nth-of-type(3)::before{content:"Función ejecutiva"}
+}
 @media(max-width:959px){.board{grid-template-columns:1fr}.principle-header{min-height:auto}.guideline{padding:18px}.hero{padding:28px 20px}}
 @media(min-width:630px) and (max-width:959px){.principle{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.principle-header{grid-column:1/-1}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
@@ -205,6 +238,14 @@ heading.append(prefix,guideButton);card.append(heading);
    button.addEventListener("click",()=>showDetail(button,principle,group,number,label,DUA_DETAILS.considerations[number]));li.append(button);list.append(li);
   });card.append(list);section.append(card);
  }board.append(section);
+}
+for(const [level,label] of [["access","Acceso"],["support","Soporte"],["executive","Función ejecutiva"]]){
+ const rail=document.createElement("div");
+ rail.className="row-label";
+ rail.dataset.level=level;
+ rail.setAttribute("aria-label","Nivel "+label);
+ const text=document.createElement("span");text.textContent=label;
+ rail.append(text);board.append(rail);
 }
 document.getElementById("detail-previous").addEventListener("click",()=>{
  const index=expandedOrder.indexOf(activeDetail);
