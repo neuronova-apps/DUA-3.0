@@ -125,6 +125,23 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 #copy-content-manual{margin:10px 0 16px}
 #copy-content-manual label{display:block;margin-bottom:6px;font-weight:650}
 #copy-content-text{width:100%;max-width:100%;font:inherit;font-size:.88rem;line-height:1.5;border:1px solid #9bb6c8;border-radius:8px;padding:10px;color:#172433;background:#f7fbfe}
+/* Hoja exclusiva para imprimir un único apartado; no afecta la interfaz en pantalla. */
+#print-detail{display:none}
+@media print{
+ @page{size:auto;margin:18mm}
+ body{background:#fff!important;color:#172433!important}
+ body>*:not(#print-detail){display:none!important}
+ #print-detail{display:block!important;font-family:Arial,Helvetica,sans-serif;color:#172433;font-size:11pt;line-height:1.5}
+ #print-detail h1{font-size:19pt;line-height:1.25;margin:0 0 12pt}
+ #print-detail h2{font-size:12pt;margin:17pt 0 6pt}
+ #print-detail p{margin:0 0 9pt;white-space:pre-line;overflow-wrap:anywhere}
+ #print-detail ul{padding-left:20pt;margin:0 0 10pt}
+ #print-detail li{margin-bottom:5pt}
+ #print-detail .print-meta{font-size:10pt;color:#44586b;margin-bottom:5pt}
+ #print-detail .print-source{border-top:1px solid #bdcbd6;padding-top:10pt;margin-top:18pt;font-size:9pt}
+ #print-detail h1,#print-detail h2{break-after:avoid}
+ #print-detail li{break-inside:avoid}
+}
 /* Orientación de lectura opcional: el panel cerrado no altera el organizador. */
 .dua-orientation{margin:0 0 18px;border:1px solid #cbd8e4;background:#fff;border-radius:16px;overflow:hidden}
 .dua-orientation>summary{cursor:pointer;padding:14px 20px;font-weight:750;color:#173e61;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -259,7 +276,7 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <ul id="detail-actions"></ul>
 </div>
 <h3>Ejemplo de aplicación educativa</h3><p class="modal-text detail-example" id="detail-example"></p>
-<div class="share-detail"><button type="button" id="detail-share">Copiar enlace de este apartado ↗</button><button type="button" id="detail-copy-content">Copiar contenido</button><span id="share-feedback" role="status" aria-live="polite"></span><span id="copy-content-feedback" role="status" aria-live="polite"></span></div>
+<div class="share-detail"><button type="button" id="detail-share">Copiar enlace de este apartado ↗</button><button type="button" id="detail-copy-content">Copiar contenido</button><button type="button" id="detail-print">Imprimir contenido</button><span id="share-feedback" role="status" aria-live="polite"></span><span id="copy-content-feedback" role="status" aria-live="polite"></span></div>
 <div id="copy-content-manual" hidden><label for="copy-content-text">Selecciona y copia este contenido:</label><textarea id="copy-content-text" readonly rows="7"></textarea></div>
 <div class="modal-actions" id="detail-navigation" hidden>
 <button type="button" id="detail-previous">← Anterior</button>
@@ -286,6 +303,7 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <p class="principle-note">Síntesis educativa de NeuroNova Apps fundamentada en CAST (2024). La explicación oficial de los tres principios puede consultarse en la sección de fuentes de esta página.</p>
 </dialog>
 <footer><div class="footer-content"><p>© 2026 NeuroNova Apps. Materiales educativos originales: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">CC BY-NC-SA 4.0</a>. Código propio: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p><p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a> · <a href="https://github.com/neuronova-apps/DUA-3.0">Repositorio en GitHub</a></p></div></footer>
+<article id="print-detail" aria-hidden="true"></article>
 <script src="./dua-contenidos.js"></script>
 <script>
 "use strict";
@@ -744,6 +762,49 @@ document.getElementById("detail-copy-content").addEventListener("click",async()=
    feedback.textContent="El navegador bloqueó la copia automática. El contenido está seleccionado para copiarlo manualmente.";
   }
  }
+});
+/* Preparar únicamente el apartado visible para la impresión del navegador o guardar como PDF. */
+function buildPrintDetail(){
+ if(!activeDetail||!dialog.open)return false;
+ const target=document.getElementById("print-detail");
+ target.replaceChildren();
+ const add=(tag,text,className)=>{
+  const node=document.createElement(tag);
+  node.textContent=text;
+  if(className)node.className=className;
+  target.append(node);
+  return node;
+ };
+ add("p",document.getElementById("detail-meta").textContent,"print-meta");
+ add("h1",document.getElementById("detail-title").textContent);
+ add("h2","¿Qué significa?");
+ const expanded=document.getElementById("detail-expanded");
+ if(!expanded.hidden){
+  for(const paragraph of document.querySelectorAll("#detail-paragraphs p")){
+   add("p",paragraph.textContent);
+  }
+  const actions=[...document.querySelectorAll("#detail-actions li")];
+  if(actions.length){
+   add("h2","Orientaciones para la práctica educativa");
+   const list=document.createElement("ul");
+   for(const action of actions){
+    const item=document.createElement("li");
+    item.textContent=action.textContent;
+    list.append(item);
+   }
+   target.append(list);
+  }
+ }else{
+  add("p",document.getElementById("detail-explanation").textContent);
+ }
+ add("h2","Ejemplo de aplicación educativa");
+ add("p",document.getElementById("detail-example").textContent);
+ add("p","Fuente conceptual: CAST (2024), Directrices DUA 3.0. Explicaciones, orientaciones y ejemplos educativos: NeuroNova Apps.","print-source");
+ add("p","Enlace del apartado: "+detailURL(activeDetail));
+ return true;
+}
+document.getElementById("detail-print").addEventListener("click",()=>{
+ if(buildPrintDetail())window.print();
 });
 document.getElementById("detail-previous").addEventListener("click",()=>{
  const index=expandedOrder.indexOf(activeDetail);
