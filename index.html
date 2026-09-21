@@ -119,8 +119,12 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .share-detail{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0}
 .share-detail button{border:1px solid #a7c1d4;background:#edf5fb;color:#16466b;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:650}
 .share-detail button:hover,.share-detail button:focus-visible{background:#dbeefa}
-#share-feedback{font-size:.86rem;color:#275b3c}
-#share-feedback:empty{display:none}
+#share-feedback,#copy-content-feedback{font-size:.86rem;color:#275b3c}
+#share-feedback:empty,#copy-content-feedback:empty{display:none}
+#copy-content-manual[hidden]{display:none}
+#copy-content-manual{margin:10px 0 16px}
+#copy-content-manual label{display:block;margin-bottom:6px;font-weight:650}
+#copy-content-text{width:100%;max-width:100%;font:inherit;font-size:.88rem;line-height:1.5;border:1px solid #9bb6c8;border-radius:8px;padding:10px;color:#172433;background:#f7fbfe}
 /* Orientación de lectura opcional: el panel cerrado no altera el organizador. */
 .dua-orientation{margin:0 0 18px;border:1px solid #cbd8e4;background:#fff;border-radius:16px;overflow:hidden}
 .dua-orientation>summary{cursor:pointer;padding:14px 20px;font-weight:750;color:#173e61;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -255,7 +259,8 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <ul id="detail-actions"></ul>
 </div>
 <h3>Ejemplo de aplicación educativa</h3><p class="modal-text detail-example" id="detail-example"></p>
-<div class="share-detail"><button type="button" id="detail-share">Copiar enlace de este apartado ↗</button><span id="share-feedback" role="status" aria-live="polite"></span></div>
+<div class="share-detail"><button type="button" id="detail-share">Copiar enlace de este apartado ↗</button><button type="button" id="detail-copy-content">Copiar contenido</button><span id="share-feedback" role="status" aria-live="polite"></span><span id="copy-content-feedback" role="status" aria-live="polite"></span></div>
+<div id="copy-content-manual" hidden><label for="copy-content-text">Selecciona y copia este contenido:</label><textarea id="copy-content-text" readonly rows="7"></textarea></div>
 <div class="modal-actions" id="detail-navigation" hidden>
 <button type="button" id="detail-previous">← Anterior</button>
 <button type="button" id="detail-next">Siguiente →</button>
@@ -407,6 +412,9 @@ function showDetail(trigger, principle, group, number, title, content){
  activeDetail=number;
  syncDetailHash(number);
  document.getElementById("share-feedback").textContent="";
+ document.getElementById("copy-content-feedback").textContent="";
+ document.getElementById("copy-content-manual").hidden=true;
+ document.getElementById("copy-content-text").value="";
  markRead(number);
  document.getElementById("detail-meta").textContent=principle.name+" · "+(number.includes(".")?"Consideración ":"Directriz ")+number;
  document.getElementById("detail-title").textContent=title;
@@ -687,6 +695,54 @@ document.getElementById("detail-share").addEventListener("click",async()=>{
   if(copied){feedback.textContent="Enlace copiado.";return}
   window.prompt("Copia este enlace para compartir el apartado:",url);
   feedback.textContent="Enlace disponible para copiar.";
+ }
+});
+/* Copiar únicamente el texto pedagógico del apartado abierto, sin botones ni interfaz. */
+function contentToCopy(){
+ if(!activeDetail||!dialog.open)return "";
+ const title=document.getElementById("detail-title").textContent.trim();
+ const meta=document.getElementById("detail-meta").textContent.trim();
+ const expanded=document.getElementById("detail-expanded");
+ const sections=[meta,title,"¿Qué significa?"];
+ if(!expanded.hidden){
+  const paragraphs=[...document.querySelectorAll("#detail-paragraphs p")].map(p=>p.textContent.trim()).filter(Boolean);
+  sections.push(paragraphs.join("\n\n"));
+  const actions=[...document.querySelectorAll("#detail-actions li")].map(li=>li.textContent.trim()).filter(Boolean);
+  if(actions.length)sections.push("Orientaciones para la práctica educativa",actions.map(action=>"• "+action).join("\n"));
+ }else{
+  sections.push(document.getElementById("detail-explanation").textContent.trim());
+ }
+ sections.push("Ejemplo de aplicación educativa",document.getElementById("detail-example").textContent.trim());
+ sections.push("Fuente conceptual: CAST (2024), Directrices DUA 3.0. Explicaciones, orientaciones y ejemplos educativos: NeuroNova Apps.");
+ sections.push("Enlace del apartado: "+detailURL(activeDetail));
+ return sections.filter(Boolean).join("\n\n");
+}
+document.getElementById("detail-copy-content").addEventListener("click",async()=>{
+ const id=activeDetail;
+ const text=contentToCopy();
+ if(!text)return;
+ const feedback=document.getElementById("copy-content-feedback");
+ const manual=document.getElementById("copy-content-manual");
+ const field=document.getElementById("copy-content-text");
+ feedback.textContent="";
+ manual.hidden=true;
+ try{
+  if(!navigator.clipboard?.writeText)throw new Error("Portapapeles no disponible");
+  await navigator.clipboard.writeText(text);
+  if(activeDetail===id)feedback.textContent="Contenido copiado.";
+ }catch(_error){
+  if(activeDetail!==id)return;
+  field.value=text;
+  manual.hidden=false;
+  field.focus();field.select();
+  let copied=false;
+  try{copied=document.execCommand("copy")}catch(_copyError){}
+  if(copied){
+   manual.hidden=true;
+   feedback.textContent="Contenido copiado.";
+  }else{
+   feedback.textContent="El navegador bloqueó la copia automática. El contenido está seleccionado para copiarlo manualmente.";
+  }
  }
 });
 document.getElementById("detail-previous").addEventListener("click",()=>{
