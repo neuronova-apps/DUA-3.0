@@ -20,6 +20,8 @@ details{border:1px solid #d2e0eb;border-radius:13px;margin:10px 0;background:#ff
 .matrix{display:grid;grid-template-columns:1fr;gap:11px;margin:18px 0}.row{display:grid;grid-template-columns:150px repeat(3,minmax(0,1fr));gap:9px}.cell{border-radius:12px;padding:13px;background:#f0f4f8;border:1px solid #d0dfeb;min-width:0}.row.head .cell{background:#173f61;color:white;font-weight:700}.cell b{display:block}.cell small{display:block}.cell.g{background:#ddf1e5}.cell.p{background:#eee6f5}.cell.b{background:#dff2fb}
 .level{cursor:pointer;text-align:left;font:inherit;font-weight:750;background:#edf3f9}.level[aria-pressed="true"]{background:#173f61;color:white}.row.highlight .cell{outline:2px solid #173f61;outline-offset:-2px}.row:not(.highlight).dimmed{opacity:.48}
 .example{padding:14px 18px;background:#edf6ff;border-left:4px solid #1471aa;border-radius:8px;margin:15px 0}
+.practice-guide{margin:19px 0 24px;border:1px solid #cbdfea;border-radius:17px;background:#f8fbfe;padding:clamp(15px,2.5vw,23px)}.practice-guide>h3{margin:0 0 7px;color:#173f61}.practice-guide>p{margin:0 0 15px;color:#405264}.practice-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:14px 0}.practice-steps button,.practice-navigation button{padding:10px 12px;border:1px solid #b7ccdc;background:white;color:#173f61;border-radius:10px;cursor:pointer;font-weight:650}.practice-steps button[aria-pressed="true"]{background:#173f61;color:white;border-color:#173f61}.practice-steps button:hover,.practice-navigation button:not(:disabled):hover{background:#e1eff9}.practice-steps button[aria-pressed="true"]:hover{background:#173f61}.practice-stage{background:white;border:1px solid #d4e1eb;border-radius:12px;padding:17px 19px}.practice-stage[hidden]{display:none}.practice-stage h4{font-size:1.08rem;color:#173f61;margin:0 0 10px}.practice-stage p{margin:8px 0}.practice-stage ul{padding-left:22px;margin:8px 0}.practice-stage li{margin:8px 0}.practice-links a{font-weight:650}.practice-navigation{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:13px}.practice-navigation button:disabled{opacity:.45;cursor:not-allowed}.practice-navigation span{font-size:.88rem;color:#405264;text-align:center}.practice-other-title{margin:27px 0 10px}
+@media(max-width:600px){.practice-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.practice-navigation{gap:5px}.practice-navigation button{padding:9px}}
 .resources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.resources a{display:block;margin-top:10px;font-weight:650}
 .footer-note{border-top:1px solid #d0dde8;margin-top:25px;padding-top:18px;font-size:.93rem}footer{background:#e5edf5;font-size:.9rem}footer p{margin:7px 0}
 .glossary-search{background:#f0f6fb;border:1px solid #d0e1ee;border-radius:13px;padding:13px 15px;margin:0 0 16px}.glossary-search label{display:block;font-weight:700;margin:0 0 7px}.glossary-search-line{display:flex;gap:8px;flex-wrap:wrap}.glossary-search input{flex:1;min-width:min(100%,220px);font:inherit;border:1px solid #9cb7cb;border-radius:9px;padding:9px 11px}.glossary-search button{background:#173f61;color:white;border:0;border-radius:9px;padding:9px 15px;cursor:pointer}.glossary-search button:hover{background:#265b83}.glossary-search p{margin:8px 0 0;font-size:.87rem;color:#405264}.glossary-entry[hidden]{display:none}.glossary-entry summary{color:#173f61}.glossary-entry p{line-height:1.55}.glossary-note{font-size:.87rem;color:#405264;margin:18px 0 0}
@@ -65,6 +67,52 @@ details{border:1px solid #d2e0eb;border-radius:13px;margin:10px 0;background:#ff
 </section>
 <section class="panel" id="practica" role="tabpanel" aria-labelledby="tab-practica" tabindex="0" hidden>
 <h2>Del principio a la práctica pedagógica</h2><p class="lead">Situaciones hipotéticas elaboradas por NeuroNova Apps para ilustrar decisiones de diseño. No son protocolos de evaluación ni indicaciones individuales para estudiantes concretos.</p>
+<section class="practice-guide" aria-labelledby="practice-guide-title">
+<h3 id="practice-guide-title">Del DUA a la práctica: un caso guiado</h3>
+<p>Explora una misma situación en cuatro pasos. Las propuestas orientan el diseño de la actividad; no describen ni diagnostican al estudiante.</p>
+<div class="practice-steps" role="group" aria-label="Pasos del caso guiado">
+<button type="button" data-practice-step="1" aria-pressed="true" aria-controls="practice-step-1">1. Situación</button>
+<button type="button" data-practice-step="2" aria-pressed="false" aria-controls="practice-step-2">2. Barreras</button>
+<button type="button" data-practice-step="3" aria-pressed="false" aria-controls="practice-step-3">3. Explorar el DUA</button>
+<button type="button" data-practice-step="4" aria-pressed="false" aria-controls="practice-step-4">4. Estrategias</button>
+</div>
+<div class="practice-stage" id="practice-step-1" data-practice-panel="1">
+<h4>1. Analiza la situación</h4>
+<p>En una actividad de producción de cuentos, Diego propone ideas creativas y las comunica oralmente. Sin embargo, tarda mucho en escribirlas y la consigna exige entregar una página completa escrita de manera individual.</p>
+<p><strong>Pregunta para el docente:</strong> ¿qué desea que sus estudiantes aprendan: organizar una historia, escribirla o ambas cosas?</p>
+</div>
+<div class="practice-stage" id="practice-step-2" data-practice-panel="2" hidden>
+<h4>2. Identifica las barreras de la actividad</h4>
+<p>La exigencia de una página escrita como única forma de trabajo puede dificultar que Diego exprese sus ideas. Además, una consigna extensa sin apoyos para organizar inicio, nudo y desenlace puede añadir una dificultad innecesaria.</p>
+<p><strong>Pregunta para el docente:</strong> ¿qué parte de la actividad puede flexibilizarse sin perder la meta de aprendizaje?</p>
+</div>
+<div class="practice-stage" id="practice-step-3" data-practice-panel="3" hidden>
+<h4>3. Explora directrices relacionadas</h4>
+<p>Estas consideraciones ofrecen distintas perspectivas para rediseñar la tarea. Selecciona un enlace para consultar su explicación completa en el organizador:</p>
+<ul class="practice-links">
+<li><strong>Compromiso:</strong> <a href="./index.html#7.1">7.1. Optimizar la elección y la autonomía ↗</a>. Dar opciones pertinentes para elegir el tema del cuento.</li>
+<li><strong>Representación:</strong> <a href="./index.html#2.5">2.5. Ilustrar mediante múltiples medios ↗</a>. Ofrecer imágenes o una secuencia visual que ayude a comprender y organizar la estructura narrativa.</li>
+<li><strong>Acción y expresión:</strong> <a href="./index.html#5.1">5.1. Usar múltiples medios para la comunicación ↗</a>. Permitir desarrollar y comunicar ideas utilizando diferentes medios, según la meta de la actividad.</li>
+</ul>
+<p><strong>Pregunta para el docente:</strong> ¿qué consideración ayuda a atender la barrera identificada en este caso?</p>
+</div>
+<div class="practice-stage" id="practice-step-4" data-practice-panel="4" hidden>
+<h4>4. Selecciona estrategias y revisa la meta</h4>
+<ul>
+<li>Ofrecer temas o personajes entre los que cada estudiante pueda elegir.</li>
+<li>Proporcionar un organizador visual de inicio, nudo y desenlace.</li>
+<li>Permitir narrar o grabar primero las ideas y luego utilizarlas como apoyo para redactar.</li>
+<li>Valorar la estructura del cuento con criterios explícitos y ofrecer retroalimentación para mejorar la producción.</li>
+</ul>
+<p><strong>Importante:</strong> si la meta es aprender a escribir, la narración oral puede servir como apoyo para producir el texto, no necesariamente sustituirlo. Si la meta es construir y comunicar una historia, pueden admitirse otros formatos de expresión.</p>
+</div>
+<div class="practice-navigation">
+<button type="button" id="practice-prev" disabled>← Anterior</button>
+<span id="practice-progress" role="status" aria-live="polite">Paso 1 de 4</span>
+<button type="button" id="practice-next">Siguiente →</button>
+</div>
+</section>
+<h3 class="practice-other-title">Otras situaciones educativas</h3>
 <details><summary>Comprender instrucciones y contenidos</summary><div class="example"><strong>Barrera posible:</strong> la explicación se ofrece una sola vez y solo de forma oral.<br><strong>Opciones de diseño:</strong> combinar instrucciones breves, demostración, apoyos visuales y comprobación de comprensión.<br><strong>Referencia conceptual:</strong> representación, directrices 1 y 2.</div></details>
 <details><summary>Participar en una actividad colectiva</summary><div class="example"><strong>Barrera posible:</strong> una actividad competitiva reconoce únicamente la rapidez.<br><strong>Opciones de diseño:</strong> permitir roles, metas de cooperación y alternativas de participación con apoyos accesibles.<br><strong>Referencia conceptual:</strong> compromiso 7 y 8; acción y expresión 4.</div></details>
 <details><summary>Expresar lo aprendido</summary><div class="example"><strong>Barrera posible:</strong> se exige un único formato de respuesta aunque la meta no requiera ese formato.<br><strong>Opciones de diseño:</strong> ofrecer respuesta oral, escrita, visual o apoyada con tecnología, siempre que permita evidenciar el aprendizaje previsto.<br><strong>Referencia conceptual:</strong> acción y expresión, directrices 4 y 5.</div></details>
@@ -115,6 +163,25 @@ function showTab(id,updateHash=true){if(!panels.some(p=>p.id===id))return;for(co
 tabs.forEach((tab,index)=>{tab.addEventListener("click",()=>showTab(tab.dataset.tab));tab.addEventListener("keydown",event=>{const keys=["ArrowRight","ArrowLeft","Home","End"];if(!keys.includes(event.key))return;event.preventDefault();const next=event.key==="Home"?0:event.key==="End"?tabs.length-1:(index+(event.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab);tabs[next].focus()})});
 const init=decodeURIComponent(location.hash.slice(1));if(panels.some(p=>p.id===init))showTab(init,false);
 window.addEventListener("hashchange",()=>{const id=decodeURIComponent(location.hash.slice(1));if(panels.some(p=>p.id===id))showTab(id,false)});
+/* Recorrido local de cuatro pasos en Aplicación educativa; sin afectar las pestañas generales. */
+const practiceSteps=[...document.querySelectorAll("[data-practice-step]")];
+const practicePanels=[...document.querySelectorAll("[data-practice-panel]")];
+const practiceProgress=document.getElementById("practice-progress");
+const practicePrev=document.getElementById("practice-prev");
+const practiceNext=document.getElementById("practice-next");
+let practiceActive=1;
+function showPracticeStep(step){
+ if(step<1||step>practiceSteps.length)return;
+ practiceActive=step;
+ for(const button of practiceSteps)button.setAttribute("aria-pressed",String(Number(button.dataset.practiceStep)===step));
+ for(const panel of practicePanels)panel.hidden=Number(panel.dataset.practicePanel)!==step;
+ practicePrev.disabled=step===1;
+ practiceNext.disabled=step===practiceSteps.length;
+ practiceProgress.textContent="Paso "+step+" de "+practiceSteps.length;
+}
+practiceSteps.forEach(button=>button.addEventListener("click",()=>showPracticeStep(Number(button.dataset.practiceStep))));
+practicePrev.addEventListener("click",()=>showPracticeStep(practiceActive-1));
+practiceNext.addEventListener("click",()=>showPracticeStep(practiceActive+1));
 /* Glosario: búsqueda local, sin modificar las pestañas ni el cuadro existentes. */
 const glossaryQuery=document.getElementById("glossary-query");
 const glossaryEntries=[...document.querySelectorAll(".glossary-entry")];
