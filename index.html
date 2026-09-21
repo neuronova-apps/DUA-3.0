@@ -21,6 +21,12 @@ main,.footer-content{max-width:1440px;margin:auto;padding:22px 20px}
 .principle-header{background:var(--strong);border-radius:20px;color:white;padding:20px 20px 25px;min-height:136px;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease}
 .principle-header::after{content:"";position:absolute;background:var(--pale);height:28px;bottom:-14px;left:-2%;width:105%;border-radius:50% 50% 0 0}
 .principle-header .eyebrow{font-size:.84rem;font-weight:650}.principle-header h3{font-size:clamp(1.2rem,2vw,1.65rem);line-height:1.2;margin:4px 0 8px}.principle-header p{font-size:.91rem;margin:0}
+.principle-header{cursor:pointer}
+.principle-header:focus-visible{outline:3px solid #e0a222;outline-offset:4px}
+.principle-header .principle-hint{display:inline-block;position:relative;z-index:1;margin-top:12px;font-size:.83rem;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.principle-header:hover .principle-hint,.principle-header:focus-visible .principle-hint{text-decoration-thickness:2px}
+.principle-dialog h2{font-size:1.5rem;margin:0 0 12px}
+.principle-dialog .principle-note{font-size:.87rem;color:#405163;margin-top:17px}
 .guideline{background:var(--pale);border:1px solid transparent;border-radius:17px;padding:16px 17px;position:relative;transition:transform .22s ease-out,box-shadow .22s ease-out,border-color .18s ease}
 .guideline:hover,.guideline:focus-within{border-color:var(--strong);box-shadow:0 7px 16px #17243320;transform:translateY(-2px) scale(1.008);z-index:1}
 .guideline h4{font-size:1rem;line-height:1.35;margin:0 0 10px}.guideline .small{font-weight:400;font-size:.82rem;display:block}
@@ -208,6 +214,14 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 <p id="level-relation" class="modal-text"></p>
 <p class="level-reference">Síntesis educativa de NeuroNova Apps basada en CAST (2024). Los niveles agrupan directrices; no son etapas que deban seguirse en orden obligatorio.</p>
 </dialog>
+<dialog id="principle-dialog" class="principle-dialog" aria-labelledby="principle-title" aria-describedby="principle-explanation">
+<button class="close" id="close-principle" type="button" aria-label="Cerrar explicación del principio">✕</button>
+<p class="modal-meta">Principio del Diseño Universal para el Aprendizaje 3.0</p>
+<h2 id="principle-title"></h2>
+<p id="principle-explanation" class="modal-text"></p>
+<p id="principle-relation" class="modal-text"></p>
+<p class="principle-note">Síntesis educativa de NeuroNova Apps fundamentada en CAST (2024). La explicación oficial de los tres principios puede consultarse en la sección de fuentes de esta página.</p>
+</dialog>
 <footer><div class="footer-content"><p>© 2026 NeuroNova Apps. Materiales educativos originales: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">CC BY-NC-SA 4.0</a>. Código propio: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p><p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a> · <a href="https://github.com/neuronova-apps/DUA-3.0">Repositorio en GitHub</a></p></div></footer>
 <script src="./dua-contenidos.js"></script>
 <script>
@@ -358,13 +372,57 @@ function openLevel(level,trigger){
 document.getElementById("close-level").addEventListener("click",()=>levelDialog.close());
 levelDialog.addEventListener("click",event=>{if(event.target===levelDialog)levelDialog.close()});
 levelDialog.addEventListener("close",()=>lastLevelTrigger?.focus());
+/* Explicaciones de los tres principios: síntesis propia basada en CAST, DUA 3.0. */
+const PRINCIPLE_DETAILS={
+ engagement:{
+  title:"Compromiso · ¿Por qué aprender?",
+  explanation:"Se refiere a las distintas maneras en que los estudiantes se vinculan con el aprendizaje: sus intereses e identidades, la motivación, el sentido de pertenencia y las condiciones que les permiten sostener el esfuerzo y desarrollar su capacidad emocional.",
+  relation:"En el cuadro comprende las directrices 7 (acoger intereses e identidades), 8 (mantener el esfuerzo y la persistencia) y 9 (capacidad emocional)."
+ },
+ representation:{
+  title:"Representación · ¿Qué aprender?",
+  explanation:"Se refiere a las diversas formas de presentar y comprender la información. Propone ofrecer alternativas perceptibles, aclarar el lenguaje y los símbolos, y apoyar la construcción de conocimientos reconociendo diferentes experiencias y perspectivas.",
+  relation:"En el cuadro comprende las directrices 1 (percepción), 2 (lenguaje y los símbolos) y 3 (construcción del conocimiento)."
+ },
+ action:{
+  title:"Acción y expresión · ¿Cómo aprender y demostrar lo aprendido?",
+  explanation:"Se refiere a las distintas maneras de interactuar con materiales y entornos, comunicar lo aprendido y desarrollar estrategias para alcanzar metas. Ofrece opciones accesibles de respuesta, herramientas de expresión y apoyos para planificar y dar seguimiento al progreso.",
+  relation:"En el cuadro comprende las directrices 4 (interacción), 5 (expresión y comunicación) y 6 (desarrollo de estrategias)."
+ }
+};
+const principleDialog=document.getElementById("principle-dialog");
+let lastPrincipleTrigger=null;
+function openPrinciple(key,trigger){
+ const info=PRINCIPLE_DETAILS[key];
+ if(!info)return;
+ lastPrincipleTrigger=trigger;
+ document.getElementById("principle-title").textContent=info.title;
+ document.getElementById("principle-explanation").textContent=info.explanation;
+ document.getElementById("principle-relation").textContent=info.relation;
+ if(!principleDialog.open)principleDialog.showModal();
+}
+document.getElementById("close-principle").addEventListener("click",()=>principleDialog.close());
+principleDialog.addEventListener("click",event=>{if(event.target===principleDialog)principleDialog.close()});
+principleDialog.addEventListener("close",()=>lastPrincipleTrigger?.focus());
 for(const principle of principles){
  const section=document.createElement("section");section.className="principle";section.dataset.principle=principle.id;
  const head=document.createElement("div");head.className="principle-header";
  const eyebrow=document.createElement("div");eyebrow.className="eyebrow";eyebrow.textContent="Diseño de múltiples medios de";
  const h3=document.createElement("h3");h3.textContent=principle.name;
  const subtitle=document.createElement("p");subtitle.textContent=principle.question;
- head.append(eyebrow,h3,subtitle);section.append(head);
+ const hint=document.createElement("span");
+ hint.className="principle-hint";
+ hint.textContent="¿Qué significa este principio? ↗";
+ head.append(eyebrow,h3,subtitle,hint);
+ head.setAttribute("role","button");
+ head.setAttribute("tabindex","0");
+ head.setAttribute("aria-haspopup","dialog");
+ head.setAttribute("aria-label","Explicar el principio de "+principle.name);
+ head.addEventListener("click",()=>openPrinciple(principle.id,head));
+ head.addEventListener("keydown",event=>{
+  if(event.key==="Enter"||event.key===" "){event.preventDefault();openPrinciple(principle.id,head)}
+ });
+ section.append(head);
  for(const group of principle.groups){
   const card=document.createElement("article");card.className="guideline";
   card.dataset.guideline=String(group.n);
