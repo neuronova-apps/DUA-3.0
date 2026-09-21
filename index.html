@@ -170,6 +170,10 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 .search-result small{display:block;font-size:.78rem;color:#42576b;margin-top:3px}
 .guideline.is-highlighted{box-shadow:inset 0 0 0 3px var(--strong),0 5px 14px #17243318;border-color:var(--strong)}
 .guideline.is-dimmed{opacity:.43}
+.principle-header.is-principle-selected{box-shadow:inset 0 0 0 3px #ffffffd9,0 6px 18px #17243327;z-index:1}
+.principle-header.is-principle-dimmed{opacity:.43}
+.principle-header{transition:transform .25s ease,box-shadow .25s ease,opacity .18s ease}
+.guideline{transition:transform .22s ease-out,box-shadow .22s ease-out,border-color .18s ease,opacity .18s ease}
 .guideline.is-highlighted .search-match{background:#fff8cb;box-shadow:0 0 0 2px #fff8cb;border-radius:4px}
 .guideline.is-highlighted .guide-open.search-match{background:#fff8cb}
 .row-label.is-level-active{background:#c2d8e9;box-shadow:inset 0 0 0 2px #376789}
@@ -464,10 +468,15 @@ for(const principle of principles){
  head.setAttribute("role","button");
  head.setAttribute("tabindex","0");
  head.setAttribute("aria-haspopup","dialog");
+ head.setAttribute("aria-pressed","false");
  head.setAttribute("aria-label","Explicar el principio de "+principle.name);
- head.addEventListener("click",()=>openPrinciple(principle.id,head));
+ const activatePrinciple=()=>{
+  setPrinciple(activePrinciple===principle.id?"all":principle.id);
+  openPrinciple(principle.id,head);
+ };
+ head.addEventListener("click",activatePrinciple);
  head.addEventListener("keydown",event=>{
-  if(event.key==="Enter"||event.key===" "){event.preventDefault();openPrinciple(principle.id,head)}
+  if(event.key==="Enter"||event.key===" "){event.preventDefault();activatePrinciple()}
  });
  section.append(head);
  for(const group of principle.groups){
@@ -541,6 +550,13 @@ function renderExploration(){
  const matched=query?searchRecords.filter(record=>record.content.includes(query)):[];
  const matchingCards=new Set(matched.map(record=>record.card));
  const allowed=levelMap[activeLevel]||null;
+ for(const head of board.querySelectorAll(".principle-header")){
+  const section=head.closest(".principle");
+  const selected=activePrinciple!=="all"&&section?.dataset.principle===activePrinciple;
+  head.classList.toggle("is-principle-selected",selected);
+  head.classList.toggle("is-principle-dimmed",activePrinciple!=="all"&&!selected);
+  head.setAttribute("aria-pressed",String(selected));
+ }
  for(const card of board.querySelectorAll(".guideline")){
   const levelMatch=!allowed||allowed.includes(Number(card.dataset.guideline));
   const principleMatch=activePrinciple==="all"||card.dataset.principle===activePrinciple;
