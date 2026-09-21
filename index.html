@@ -115,6 +115,28 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 @media(min-width:1101px){.level-inline{display:none}}
 @media(max-width:1100px){.level-inline{display:block}}
 /* Controles de exploración: efectos visuales sin modificar el tamaño del cuadro. */
+/* Orientación de lectura opcional: el panel cerrado no altera el organizador. */
+.dua-orientation{margin:0 0 18px;border:1px solid #cbd8e4;background:#fff;border-radius:16px;overflow:hidden}
+.dua-orientation>summary{cursor:pointer;padding:14px 20px;font-weight:750;color:#173e61;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dua-orientation>summary::-webkit-details-marker{display:none}
+.dua-orientation>summary::after{content:"+";font-size:1.3rem;line-height:1}
+.dua-orientation[open]>summary::after{content:"−"}
+.dua-orientation>summary:hover{background:#f0f6fb}
+.orientation-content{padding:0 20px 18px}
+.orientation-content>p{margin:8px 0 14px;color:#405163}
+.orientation-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.orientation-card{padding:14px;border-radius:12px;background:#f1f6fa;min-width:0}
+.orientation-card h3{font-size:1rem;margin:0 0 5px}
+.orientation-card p{margin:0;font-size:.92rem}
+.orientation-card[data-principle="engagement"]{border-top:4px solid #087d44}
+.orientation-card[data-principle="representation"]{border-top:4px solid #6e508e}
+.orientation-card[data-principle="action"]{border-top:4px solid #0877ac}
+.orientation-roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.orientation-roles>div{border:1px solid #d3e0ea;border-radius:12px;padding:12px 14px}
+.orientation-roles strong{display:block;margin-bottom:4px;color:#173e61}
+.orientation-roles p{margin:0;font-size:.92rem}
+.orientation-note{font-size:.86rem}
+@media(max-width:759px){.orientation-grid,.orientation-roles{grid-template-columns:1fr}.dua-orientation>summary{padding:13px 15px}.orientation-content{padding:0 15px 15px}}
 .explore-tools{background:white;border:1px solid #cbd8e4;border-radius:16px;padding:18px 20px;margin:0 0 18px}
 .explore-tools>label{display:block;font-weight:750;margin-bottom:8px}
 .search-line{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
@@ -163,6 +185,24 @@ dialog .close{float:right;background:#edf2f8;border:0;border-radius:50%;width:38
 </nav>
 <main id="contenido">
 <section class="intro" aria-labelledby="explora"><h2 id="explora">Explora los tres principios del DUA 3.0</h2><p>La estructura y numeración siguen CAST (2024). Selecciona las directrices 1 a 9 o cualquiera de sus 36 consideraciones para explorar explicaciones y ejemplos propios de NeuroNova Apps.</p></section>
+<details class="dua-orientation">
+<summary>¿Cómo interpretar este cuadro del DUA 3.0?</summary>
+<div class="orientation-content">
+<p>Lee las <strong>columnas</strong> como tres preguntas complementarias; las <strong>filas</strong> reúnen directrices de Acceso, Soporte y Función ejecutiva.</p>
+<div class="orientation-grid" aria-label="Significado de las tres columnas">
+<div class="orientation-card" data-principle="engagement"><h3>Compromiso · ¿Por qué aprender?</h3><p>Cómo conectar con los intereses, favorecer la motivación y sostener la participación.</p></div>
+<div class="orientation-card" data-principle="representation"><h3>Representación · ¿Qué aprender?</h3><p>Cómo ofrecer la información de distintas maneras para facilitar su acceso y comprensión.</p></div>
+<div class="orientation-card" data-principle="action"><h3>Acción y expresión · ¿Cómo aprender y demostrarlo?</h3><p>Cómo ofrecer alternativas para interactuar, desarrollar actividades y mostrar lo aprendido.</p></div>
+</div>
+<h3>¿Quién hace qué?</h3>
+<div class="orientation-roles" aria-label="Papel del docente y del estudiante">
+<div><strong>Docente</strong><p>Diseña opciones, identifica barreras y facilita apoyos.</p></div>
+<div><strong>Estudiante</strong><p>Participa, elige recursos y desarrolla progresivamente su autonomía.</p></div>
+<div><strong>Ambos</strong><p>Dialogan sobre el aprendizaje, revisan avances y ajustan estrategias y apoyos.</p></div>
+</div>
+<p class="orientation-note"><strong>Clave de lectura:</strong> ningún principio corresponde exclusivamente al docente o al estudiante. Los tres implican decisiones de diseño docente y participación del aprendiz. Síntesis educativa de NeuroNova Apps basada en CAST (2024).</p>
+</div>
+</details>
 <section class="explore-tools" aria-label="Buscar y explorar directrices del DUA">
 <label for="dua-search">Buscar directrices y consideraciones</label>
 <div class="search-line"><input id="dua-search" type="search" autocomplete="off" placeholder="Ej.: autonomía, 3.4, accesibilidad…" aria-describedby="dua-search-help"><button id="dua-clear" type="button">Limpiar búsqueda</button></div>
