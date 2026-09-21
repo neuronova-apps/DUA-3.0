@@ -22,6 +22,7 @@ details{border:1px solid #d2e0eb;border-radius:13px;margin:10px 0;background:#ff
 .example{padding:14px 18px;background:#edf6ff;border-left:4px solid #1471aa;border-radius:8px;margin:15px 0}
 .resources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.resources a{display:block;margin-top:10px;font-weight:650}
 .footer-note{border-top:1px solid #d0dde8;margin-top:25px;padding-top:18px;font-size:.93rem}footer{background:#e5edf5;font-size:.9rem}footer p{margin:7px 0}
+.glossary-search{background:#f0f6fb;border:1px solid #d0e1ee;border-radius:13px;padding:13px 15px;margin:0 0 16px}.glossary-search label{display:block;font-weight:700;margin:0 0 7px}.glossary-search-line{display:flex;gap:8px;flex-wrap:wrap}.glossary-search input{flex:1;min-width:min(100%,220px);font:inherit;border:1px solid #9cb7cb;border-radius:9px;padding:9px 11px}.glossary-search button{background:#173f61;color:white;border:0;border-radius:9px;padding:9px 15px;cursor:pointer}.glossary-search button:hover{background:#265b83}.glossary-search p{margin:8px 0 0;font-size:.87rem;color:#405264}.glossary-entry[hidden]{display:none}.glossary-entry summary{color:#173f61}.glossary-entry p{line-height:1.55}.glossary-note{font-size:.87rem;color:#405264;margin:18px 0 0}
 @media(max-width:760px){.cards,.resources{grid-template-columns:1fr}.row{grid-template-columns:1fr;gap:5px;border:1px solid #cddfea;border-radius:14px;padding:9px}.row.head{display:none}.cell{padding:9px}.cell::before{content:attr(data-col);font-size:.75rem;font-weight:750;display:block}.tabnav button{flex-grow:1}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 </style>
@@ -36,6 +37,7 @@ details{border:1px solid #d2e0eb;border-radius:13px;margin:10px 0;background:#ff
 <button id="tab-practica" type="button" role="tab" aria-controls="practica" aria-selected="false" tabindex="-1" data-tab="practica">Aplicación educativa</button>
 <button id="tab-biblioteca" type="button" role="tab" aria-controls="biblioteca" aria-selected="false" tabindex="-1" data-tab="biblioteca">Biblioteca</button>
 <button id="tab-preguntas" type="button" role="tab" aria-controls="preguntas" aria-selected="false" tabindex="-1" data-tab="preguntas">Preguntas frecuentes</button>
+<button id="tab-glosario" type="button" role="tab" aria-controls="glosario" aria-selected="false" tabindex="-1" data-tab="glosario">Glosario DUA</button>
 </div>
 <section class="panel" id="fundamentos" role="tabpanel" aria-labelledby="tab-fundamentos" tabindex="0">
 <h2>Fundamentos del Diseño Universal para el Aprendizaje</h2><p class="lead">El DUA es un marco para planificar oportunidades de aprendizaje que reconozcan la variabilidad de las personas y reduzcan barreras innecesarias. Las directrices de CAST orientan decisiones de diseño educativo; no son una receta única para toda aula.</p>
@@ -85,6 +87,24 @@ details{border:1px solid #d2e0eb;border-radius:13px;margin:10px 0;background:#ff
 <details><summary>¿Cómo empiezo a aplicar el DUA en mi aula?</summary><p>Define el propósito de aprendizaje, revisa qué obstáculos podrían surgir en la actividad, ofrece opciones pertinentes y recoge evidencias para mejorar la siguiente planificación.</p></details>
 <details><summary>¿Se puede aplicar con pocos recursos tecnológicos?</summary><p>Sí. Instrucciones claras, materiales manipulativos, trabajo cooperativo y diversas formas de respuesta pueden ampliar las opciones. La tecnología es un recurso posible, no un requisito universal.</p></details>
 </section>
+<section class="panel" id="glosario" role="tabpanel" aria-labelledby="tab-glosario" tabindex="0" hidden>
+<h2>Glosario interactivo del DUA</h2>
+<p class="lead">Consulta términos frecuentes del Diseño Universal para el Aprendizaje. Selecciona un concepto para ver su significado y un ejemplo breve de aula.</p>
+<div class="glossary-search"><label for="glossary-query">Buscar un término o una palabra de su explicación</label><div class="glossary-search-line"><input id="glossary-query" type="search" autocomplete="off" placeholder="Ej.: barreras, motivación, apoyos…"><button id="glossary-clear" type="button">Limpiar</button></div><p id="glossary-status" role="status" aria-live="polite">Se muestran 10 conceptos.</p></div>
+<div class="glossary-items">
+<details class="glossary-entry"><summary>Barreras para el aprendizaje y la participación</summary><p><strong>Significado:</strong> obstáculos que aparecen al interactuar las características de los estudiantes con una actividad, los materiales, el entorno o las formas de evaluación.</p><p><strong>Ejemplo:</strong> exigir únicamente respuestas escritas puede impedir que un estudiante demuestre lo que sabe oralmente.</p></details>
+<details class="glossary-entry"><summary>Andamiaje</summary><p><strong>Significado:</strong> apoyo temporal que ayuda a realizar una tarea y se ajusta o retira gradualmente conforme se desarrolla mayor autonomía.</p><p><strong>Ejemplo:</strong> ofrecer una secuencia visual para escribir un cuento y reducir las pistas cuando el estudiante ya organiza sus ideas.</p></details>
+<details class="glossary-entry"><summary>Agencia del aprendiz</summary><p><strong>Significado:</strong> capacidad de actuar con intención, reflexionar, tomar decisiones y utilizar recursos para orientar el propio aprendizaje.</p><p><strong>Ejemplo:</strong> elegir cómo presentar un proyecto, explicar la elección y revisar el resultado obtenido.</p></details>
+<details class="glossary-entry"><summary>Autorregulación</summary><p><strong>Significado:</strong> reconocer y ajustar emociones, atención y estrategias para avanzar hacia una meta de aprendizaje.</p><p><strong>Ejemplo:</strong> identificar una dificultad, pedir ayuda o hacer una pausa breve y retomar la tarea con otra estrategia.</p></details>
+<details class="glossary-entry"><summary>Variabilidad del aprendiz</summary><p><strong>Significado:</strong> diversidad de intereses, conocimientos, experiencias y formas de participar y aprender, que también pueden cambiar según el contexto.</p><p><strong>Ejemplo:</strong> un mismo estudiante puede comprender mejor una explicación oral en una actividad y necesitar imágenes en otra.</p></details>
+<details class="glossary-entry"><summary>Accesibilidad</summary><p><strong>Significado:</strong> condiciones que permiten percibir, comprender y utilizar recursos y entornos con las menores barreras posibles.</p><p><strong>Ejemplo:</strong> acompañar un video con subtítulos y una descripción comprensible de su información visual.</p></details>
+<details class="glossary-entry"><summary>Apoyos educativos</summary><p><strong>Significado:</strong> recursos, ajustes o formas de acompañamiento que facilitan el acceso, la participación y el progreso hacia las metas.</p><p><strong>Ejemplo:</strong> usar material manipulativo para explorar fracciones antes de representarlas con números.</p></details>
+<details class="glossary-entry"><summary>Funciones ejecutivas</summary><p><strong>Significado:</strong> procesos que ayudan a establecer metas, organizar pasos, mantener información relevante y revisar las propias acciones.</p><p><strong>Ejemplo:</strong> utilizar una lista breve de pasos para planificar, realizar y comprobar un experimento.</p></details>
+<details class="glossary-entry"><summary>Múltiples medios de representación</summary><p><strong>Significado:</strong> diferentes formas de presentar información para favorecer que los estudiantes accedan a ella y construyan significado.</p><p><strong>Ejemplo:</strong> enseñar el ciclo del agua mediante una explicación oral, una imagen y una demostración.</p></details>
+<details class="glossary-entry"><summary>Múltiples medios de acción y expresión</summary><p><strong>Significado:</strong> alternativas para interactuar con las actividades y comunicar lo aprendido, respetando la meta educativa.</p><p><strong>Ejemplo:</strong> permitir explicar un proceso mediante un texto, una exposición oral o un esquema cuando cualquiera de esas vías permite evidenciar el mismo aprendizaje.</p></details>
+</div>
+<p class="glossary-note">Definiciones y ejemplos educativos elaborados por NeuroNova Apps para facilitar la consulta; no son citas textuales ni definiciones oficiales de CAST.</p>
+</section>
 <div class="footer-note"><p><strong>Fundamento conceptual:</strong> CAST. (2024). <em>CAST Universal Design for Learning Guidelines, version 3.0</em>. <a href="https://udlguidelines.cast.org/es/" target="_blank" rel="noopener noreferrer">Fuente oficial en español ↗</a></p><p>Las explicaciones, ejemplos y preguntas de esta página son elaboraciones educativas originales de NeuroNova Apps basadas en el marco de CAST. Este proyecto es independiente y no es una publicación oficial ni está respaldado por CAST.</p></div>
 </main><footer><div class="foot"><p>© 2026 NeuroNova Apps · Contenidos educativos originales: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/CONTENT-LICENSE.md">CC BY-NC-SA 4.0</a> · Código propio: <a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/LICENSE">MIT</a>.</p><p><a href="https://github.com/neuronova-apps/DUA-3.0/blob/main/ATTRIBUTION.md">Fuentes y atribuciones</a> · <a href="./index.html">Volver al explorador</a></p></div></footer>
 <script>
@@ -95,6 +115,24 @@ function showTab(id,updateHash=true){if(!panels.some(p=>p.id===id))return;for(co
 tabs.forEach((tab,index)=>{tab.addEventListener("click",()=>showTab(tab.dataset.tab));tab.addEventListener("keydown",event=>{const keys=["ArrowRight","ArrowLeft","Home","End"];if(!keys.includes(event.key))return;event.preventDefault();const next=event.key==="Home"?0:event.key==="End"?tabs.length-1:(index+(event.key==="ArrowRight"?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.tab);tabs[next].focus()})});
 const init=decodeURIComponent(location.hash.slice(1));if(panels.some(p=>p.id===init))showTab(init,false);
 window.addEventListener("hashchange",()=>{const id=decodeURIComponent(location.hash.slice(1));if(panels.some(p=>p.id===id))showTab(id,false)});
+/* Glosario: búsqueda local, sin modificar las pestañas ni el cuadro existentes. */
+const glossaryQuery=document.getElementById("glossary-query");
+const glossaryEntries=[...document.querySelectorAll(".glossary-entry")];
+const glossaryStatus=document.getElementById("glossary-status");
+const normalizeGlossary=text=>text.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es").trim();
+function filterGlossary(){
+ const query=normalizeGlossary(glossaryQuery.value);
+ let visible=0;
+ for(const entry of glossaryEntries){
+  const match=!query||normalizeGlossary(entry.textContent).includes(query);
+  entry.hidden=!match;
+  if(match)visible++;
+ }
+ glossaryStatus.textContent=visible===1?"Se muestra 1 concepto.":"Se muestran "+visible+" conceptos.";
+ if(!visible)glossaryStatus.textContent="No se encontraron conceptos. Prueba otra palabra.";
+}
+glossaryQuery.addEventListener("input",filterGlossary);
+document.getElementById("glossary-clear").addEventListener("click",()=>{glossaryQuery.value="";filterGlossary();glossaryQuery.focus()});
 const rows=[...document.querySelectorAll(".matrix .row[data-level]")];for(const row of rows){row.querySelector("button").addEventListener("click",()=>{const was=row.classList.contains("highlight");for(const r of rows){r.classList.remove("highlight","dimmed");r.querySelector("button").setAttribute("aria-pressed","false")}if(was){document.getElementById("level-description").textContent="Selecciona un nivel para explorar su relación con los tres principios.";return}for(const r of rows)r.classList.add(r===row?"highlight":"dimmed");row.querySelector("button").setAttribute("aria-pressed","true");document.getElementById("level-description").textContent="Nivel seleccionado: "+row.querySelector("button").textContent+". Se destacan las tres directrices de esta fila."})}
 </script>
 </body></html>
